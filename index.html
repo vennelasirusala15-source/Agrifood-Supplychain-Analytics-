@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agriculture → Business Administration → Supply Chain → Operations → Analytics</title>
+<meta name="description" content="Power BI analytics project connecting agriculture, business administration, operational logistics, supply chain and data analytics through a synthetic nature-inclusive agrifood dataset.">
+<style>
+:root {
+  --bg:#f5f7f2; --surface:#ffffff; --ink:#163021; --muted:#607066;
+  --accent:#2f6b4f; --accent2:#8fbf77; --line:#d9e3da; --soft:#eaf3e8;
+  --warn:#fff4d6; --shadow:0 12px 34px rgba(26,56,38,.08);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
+a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+.wrap{max-width:1180px;margin:auto;padding:0 22px}
+.hero{padding:72px 0 48px;background:linear-gradient(135deg,#173a28 0%,#2d664b 62%,#5b8c66 100%);color:white}
+.eyebrow{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:800;opacity:.82}
+h1{font-family:Georgia,serif;font-size:clamp(2.5rem,6vw,5rem);line-height:1.03;max-width:950px;margin:.35em 0 .25em}
+.hero p{max-width:850px;font-size:1.08rem;color:#e9f4ec}
+.badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+.badge{padding:8px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.08);font-size:.88rem}
+nav{position:sticky;top:0;z-index:10;background:rgba(245,247,242,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;gap:18px;overflow:auto;padding-top:12px;padding-bottom:12px;white-space:nowrap}
+nav a{font-size:.9rem;font-weight:700}
+main{padding:38px 0 80px}
+section{margin:0 0 48px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:var(--shadow)}
+h2{font-family:Georgia,serif;font-size:2rem;margin:.1em 0 .55em}
+h3{font-size:1.12rem;margin:1.4em 0 .35em}
+.lede{font-size:1.09rem;color:#385044}
+.notice{background:var(--warn);border:1px solid #efd18c;border-radius:16px;padding:15px 18px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.metric{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px}
+.metric .v{font-size:2rem;font-weight:850;letter-spacing:-.04em}
+.metric .l{color:var(--muted);font-size:.92rem}
+.finding-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.finding{background:var(--soft);border-radius:18px;padding:20px;border:1px solid #d7e8d3}
+.finding strong{display:block;font-size:1.08rem;margin-bottom:5px}
+.cite{font-size:.76em;vertical-align:super;font-weight:800;margin-left:2px}
+.loop{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#12281c;color:#eaf4ed;border-radius:16px;padding:16px;overflow:auto}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+input,select{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font:inherit}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
+table{border-collapse:collapse;width:100%;background:white}
+th,td{text-align:left;padding:13px 14px;border-bottom:1px solid #e8ede8;vertical-align:top}
+th{position:sticky;top:0;background:#eef5ef;font-size:.83rem;text-transform:uppercase;letter-spacing:.04em}
+.ref-no{width:50px;font-weight:800;color:var(--accent)}
+.ref-meta{font-size:.84rem;color:var(--muted);margin-top:4px}
+footer{padding:30px 0 60px;color:var(--muted);font-size:.9rem}
+@media(max-width:820px){.grid,.finding-grid,.controls{grid-template-columns:1fr} .hero{padding-top:48px}}
+@media print{nav,.controls{display:none} body{background:white} .card,.metric{box-shadow:none}}
+
+.dash-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.dash-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+.dash-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.dash-head span{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--soft);font-weight:800;color:var(--accent)}
+.dash-head h3{margin:0;font-size:1.05rem}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.mini-kpi{background:var(--soft);border-radius:14px;padding:14px;text-align:center}
+.mini-kpi b{display:block;font-size:1.5rem}.mini-kpi small{color:var(--muted)}
+.bar-chart{display:grid;gap:12px;margin:15px 0}
+.bar-row{display:grid;grid-template-columns:92px 1fr 74px;gap:10px;align-items:center;font-size:.9rem}
+.track{height:16px;background:#e7eee8;border-radius:999px;overflow:hidden}.fill{height:100%;background:var(--accent);border-radius:999px}
+.scatter{width:100%;height:auto;background:#fbfdfb;border:1px solid var(--line);border-radius:14px}.scatter .axis{stroke:#789083;stroke-width:1.4}.scatter circle{fill:var(--accent)}.scatter .trend{stroke:#7b4f24;stroke-width:3;stroke-dasharray:7 5}.scatter text{font-size:12px;fill:#53675b}
+.qual-viz{display:grid;gap:9px;margin:12px 0}.qual-viz div{background:var(--soft);padding:12px;border-radius:12px}.qual-viz strong{display:block;font-size:.82rem;color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:820px){.dash-grid{grid-template-columns:1fr}.bar-row{grid-template-columns:78px 1fr 68px}}
+
+.bridge-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:22px 0}
+.bridge-card{background:var(--soft);border:1px solid #d7e8d3;border-radius:16px;padding:16px}
+.bridge-card strong{display:block;color:var(--accent);margin-bottom:6px}
+.bridge-card span{font-size:.9rem;color:#455b4d}
+.skill-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.skill-chips span{background:#173a28;color:#fff;border-radius:999px;padding:8px 12px;font-size:.84rem;font-weight:700}
+.analytics-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 22px}
+.analytics-strip div{background:#173a28;color:#eef8f0;border-radius:15px;padding:15px}
+.analytics-strip b{display:block;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.analytics-strip span{font-size:.84rem;color:#d7e9dc}
+@media(max-width:1000px){.bridge-grid{grid-template-columns:repeat(2,1fr)}.analytics-strip{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.bridge-grid,.analytics-strip{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Power BI · Supply Chain · Operations · Agribusiness Analytics</div>
+    <h1>Agriculture → Supply Chain → Operations → Analytics</h1>
+    <p>A Power BI analytics portfolio project that connects my academic foundation in Agriculture and Business Administration with practical experience in operational logistics and supply chain. The dashboard explores economic, behavioural, value-chain and sustainability indicators in a synthetic nature-inclusive agrifood dataset.</p>
+    <div class="badges">
+      <span class="badge">120 synthetic farmers</span>
+      <span class="badge">21.7% simulated adoption</span>
+      <span class="badge">Interactive Power BI dashboards</span>
+      <span class="badge">100 DOI-linked studies</span>
+      <span class="badge">DAX · KPI design · segmentation</span>
+    </div>
+  </div>
+</header>
+
+<nav><div class="wrap">
+<a href="#profile">Project</a><a href="#dashboard">Dashboards</a><a href="#abstract">Research context</a><a href="#question">Research question</a><a href="#findings">Findings</a>
+<a href="#literature">Literature synthesis</a><a href="#systems">System dynamics</a>
+<a href="#method">Method</a><a href="#references">100 references</a>
+</div></nav>
+
+<main class="wrap">
+
+<section id="profile" class="card">
+  <div class="eyebrow" style="color:var(--accent)">Portfolio positioning</div>
+  <h2>Turning domain knowledge into analytical insight</h2>
+  <p class="lede">This project is designed primarily as an <strong>analytics portfolio project</strong>. Agriculture provides the domain context, Business Administration provides the commercial and decision-making perspective, and my operational logistics and supply-chain experience provide the process and execution lens. Power BI connects these areas through data.</p>
+
+  <div class="bridge-grid">
+    <div class="bridge-card"><strong>Agriculture</strong><span>Domain understanding of farming systems, sustainability and agrifood challenges.</span></div>
+    <div class="bridge-card"><strong>Business Administration</strong><span>Business viability, stakeholder thinking, decision-making and strategy.</span></div>
+    <div class="bridge-card"><strong>Operational Logistics</strong><span>Process execution, coordination, operational efficiency and real-world constraints.</span></div>
+    <div class="bridge-card"><strong>Supply Chain</strong><span>Value-chain coordination, incentives, material and information flows, stakeholder dependencies.</span></div>
+    <div class="bridge-card"><strong>Data Analytics</strong><span>KPI development, DAX measures, segmentation, visualization and interpretation in Power BI.</span></div>
+  </div>
+
+  <h3>Analytics capabilities demonstrated</h3>
+  <div class="skill-chips">
+    <span>Power BI</span><span>DAX</span><span>KPI Design</span><span>Data Modelling</span>
+    <span>Interactive Slicers</span><span>Segmentation</span><span>Descriptive Analytics</span>
+    <span>Insight Generation</span><span>Research Synthesis</span><span>Systems Thinking</span>
+  </div>
+</section>
+
+<section id="abstract" class="card">
+  <div class="eyebrow" style="color:var(--accent)">Research context</div>
+  <h2>Using analytics to explore an agrifood transition problem</h2>
+  <p class="lede">Nature-inclusive agriculture is not only an ecological practice choice. It is embedded in farmer capabilities, financial conditions, perceived risk, policy settings, social norms, value-chain relationships, market rewards and longer-term ecological feedbacks. Dutch transition research identifies interconnected barriers and lock-ins rather than a single missing incentive <a class="cite" href="#ref-1" aria-label="Reference 1">[1]</a><a class="cite" href="#ref-3" aria-label="Reference 3">[3]</a><a class="cite" href="#ref-6" aria-label="Reference 6">[6]</a>.</p>
+  <p>This exploratory project combines a project dataset of 120 farmer observations with Power BI and a structured literature base of 100 DOI-linked publications. The dashboard is used to generate hypotheses, not population estimates. The strongest simulated adoption difference is associated with training access; subsidy access shows a smaller positive difference; market-premium access is weak; perceived risk is negatively associated with adoption intention; non-adopters show greater financial pressure; and adopters show higher simulated soil-health and biodiversity scores.</p>
+  
+</section>
+
+<section id="question">
+  <div class="card">
+    <div class="eyebrow" style="color:var(--accent)">Research framing</div>
+    <h2>Central research question</h2>
+    <p class="lede"><strong>How do interacting economic, behavioural, institutional, value-chain and ecological mechanisms shape farmers’ adoption of nature-inclusive agricultural practices?</strong></p>
+    <p>This question builds on research showing that sustainable-practice adoption is shaped by behavioural, economic, institutional and social factors <a class="cite" href="#ref-9" aria-label="Reference 9">[9]</a><a class="cite" href="#ref-10" aria-label="Reference 10">[10]</a><a class="cite" href="#ref-16" aria-label="Reference 16">[16]</a><a class="cite" href="#ref-17" aria-label="Reference 17">[17]</a><a class="cite" href="#ref-25" aria-label="Reference 25">[25]</a><a class="cite" href="#ref-55" aria-label="Reference 55">[55]</a><a class="cite" href="#ref-63" aria-label="Reference 63">[63]</a>, while sustainability-transition scholarship emphasises regimes, pathways, governance and multi-level interactions <a class="cite" href="#ref-24" aria-label="Reference 24">[24]</a><a class="cite" href="#ref-68" aria-label="Reference 68">[68]</a><a class="cite" href="#ref-69" aria-label="Reference 69">[69]</a><a class="cite" href="#ref-71" aria-label="Reference 71">[71]</a><a class="cite" href="#ref-76" aria-label="Reference 76">[76]</a><a class="cite" href="#ref-78" aria-label="Reference 78">[78]</a><a class="cite" href="#ref-79" aria-label="Reference 79">[79]</a>.</p>
+  </div>
+</section>
+
+<section id="findings">
+  <h2>Exploratory dashboard findings</h2>
+  
+  <div class="analytics-strip">
+    <div><b>Measures</b><span>Total Farmers · Adopted Farmers · Adoption Rate</span></div>
+    <div><b>Segmentation</b><span>Adopter vs non-adopter · support access · risk · financial pressure</span></div>
+    <div><b>Interactivity</b><span>Region and Farm Type slicers with cross-filtering</span></div>
+    <div><b>Business lens</b><span>Economic incentives · value-chain coordination · policy · sustainability outcomes</span></div>
+  </div>
+
+  <div class="grid">
+    <div class="metric"><div class="v">120</div><div class="l">Synthetic farmer observations</div></div>
+    <div class="metric"><div class="v">26</div><div class="l">Synthetic adopters</div></div>
+    <div class="metric"><div class="v">21.7%</div><div class="l">Overall simulated adoption rate</div></div>
+  </div>
+  <div class="finding-grid" style="margin-top:18px">
+    <div class="finding"><strong>Training access</strong>~34% adoption with training versus ~12% without. This is compatible with literature on knowledge, learning, information and farmer decision-making <a class="cite" href="#ref-37" aria-label="Reference 37">[37]</a><a class="cite" href="#ref-48" aria-label="Reference 48">[48]</a><a class="cite" href="#ref-50" aria-label="Reference 50">[50]</a><a class="cite" href="#ref-66" aria-label="Reference 66">[66]</a>.</div>
+    <div class="finding"><strong>Subsidy access</strong>~26% adoption with subsidy access versus ~18% without. Financial incentives matter, but evidence suggests design, opportunity costs and combined policy packages are important <a class="cite" href="#ref-6" aria-label="Reference 6">[6]</a><a class="cite" href="#ref-7" aria-label="Reference 7">[7]</a><a class="cite" href="#ref-10" aria-label="Reference 10">[10]</a><a class="cite" href="#ref-17" aria-label="Reference 17">[17]</a><a class="cite" href="#ref-38" aria-label="Reference 38">[38]</a>.</div>
+    <div class="finding"><strong>Perceived risk</strong>Higher perceived risk is associated with lower adoption intention in the project data, consistent with behavioural-adoption literature stressing cognition, uncertainty and intention <a class="cite" href="#ref-16" aria-label="Reference 16">[16]</a><a class="cite" href="#ref-19" aria-label="Reference 19">[19]</a><a class="cite" href="#ref-49" aria-label="Reference 49">[49]</a><a class="cite" href="#ref-55" aria-label="Reference 55">[55]</a><a class="cite" href="#ref-67" aria-label="Reference 67">[67]</a>.</div>
+    <div class="finding"><strong>Peer and social context</strong>Farmer identity, peer influence, social norms and social capital are plausible mechanisms linking individual choices to community-level diffusion <a class="cite" href="#ref-5" aria-label="Reference 5">[5]</a><a class="cite" href="#ref-12" aria-label="Reference 12">[12]</a><a class="cite" href="#ref-35" aria-label="Reference 35">[35]</a><a class="cite" href="#ref-40" aria-label="Reference 40">[40]</a><a class="cite" href="#ref-41" aria-label="Reference 41">[41]</a><a class="cite" href="#ref-60" aria-label="Reference 60">[60]</a><a class="cite" href="#ref-61" aria-label="Reference 61">[61]</a><a class="cite" href="#ref-62" aria-label="Reference 62">[62]</a>.</div>
+    <div class="finding"><strong>Biodiversity outcomes</strong>Synthetic adopters show much higher biodiversity scores. This is illustrative only, but the literature supports measuring biodiversity outcomes alongside participation and practice adoption <a class="cite" href="#ref-8" aria-label="Reference 8">[8]</a><a class="cite" href="#ref-43" aria-label="Reference 43">[43]</a><a class="cite" href="#ref-44" aria-label="Reference 44">[44]</a><a class="cite" href="#ref-84" aria-label="Reference 84">[84]</a>.</div>
+    <div class="finding"><strong>Soil health</strong>Synthetic adopters show higher soil-health scores. Soil-health and regenerative-agriculture research provides the ecological basis for including these outcome variables <a class="cite" href="#ref-28" aria-label="Reference 28">[28]</a><a class="cite" href="#ref-29" aria-label="Reference 29">[29]</a><a class="cite" href="#ref-30" aria-label="Reference 30">[30]</a><a class="cite" href="#ref-31" aria-label="Reference 31">[31]</a><a class="cite" href="#ref-96" aria-label="Reference 96">[96]</a><a class="cite" href="#ref-97" aria-label="Reference 97">[97]</a><a class="cite" href="#ref-98" aria-label="Reference 98">[98]</a><a class="cite" href="#ref-99" aria-label="Reference 99">[99]</a><a class="cite" href="#ref-100" aria-label="Reference 100">[100]</a>.</div>
+  </div>
+</section>
+
+<section id="dashboard">
+  <div class="eyebrow" style="color:var(--accent)">Power BI analytics dashboard</div>
+  <h2>Interactive analytical views and KPI insights</h2>
+  <p class="lede">The dashboard translates a 120-record synthetic agrifood dataset into business-facing analytical views. It demonstrates KPI construction, comparison of farmer segments, behavioural and economic analysis, sustainability indicators, and interactive filtering by region and farm type.</p>
+
+  <div class="dash-grid">
+    <article class="dash-card">
+      <div class="dash-head"><span>01</span><h3>Adoption overview</h3></div>
+      <div class="kpi-row">
+        <div class="mini-kpi"><b>120</b><small>Total farmers</small></div>
+        <div class="mini-kpi"><b>26</b><small>Adopters</small></div>
+        <div class="mini-kpi"><b>21.7%</b><small>Adoption rate</small></div>
+      </div>
+      <p>Overall simulated adoption is 21.7% (26 of 120 synthetic farmers).</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>02</span><h3>Adoption rate by subsidy access</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Yes</label><div class="track"><div class="fill" style="width:65%"></div></div><b>~26%</b></div>
+        <div class="bar-row"><label>No</label><div class="track"><div class="fill" style="width:45%"></div></div><b>~18%</b></div>
+      </div>
+      <p>Subsidy access is associated with a moderate difference in simulated adoption.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>03</span><h3>Adoption rate by market premium access</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Yes</label><div class="track"><div class="fill" style="width:57%"></div></div><b>~22–23%</b></div>
+        <div class="bar-row"><label>No</label><div class="track"><div class="fill" style="width:52%"></div></div><b>~21%</b></div>
+      </div>
+      <p>The simulated market-premium difference is comparatively small.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>04</span><h3>Adoption rate by training access</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Yes</label><div class="track"><div class="fill" style="width:85%"></div></div><b>~34%</b></div>
+        <div class="bar-row"><label>No</label><div class="track"><div class="fill" style="width:30%"></div></div><b>~12%</b></div>
+      </div>
+      <p>Training shows the largest descriptive adoption difference among the three support mechanisms.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>05</span><h3>Perceived risk vs adoption intention</h3></div>
+      <svg class="scatter" viewBox="0 0 420 235" role="img" aria-label="Illustrative downward association between perceived risk and adoption intention">
+        <line x1="45" y1="190" x2="390" y2="190" class="axis"/><line x1="45" y1="20" x2="45" y2="190" class="axis"/>
+        <text x="190" y="225">Perceived risk (1–5)</text><text x="14" y="125" transform="rotate(-90 14 125)">Adoption intention (1–5)</text>
+        <circle cx="80" cy="52" r="5"/><circle cx="110" cy="70" r="5"/><circle cx="150" cy="88" r="5"/>
+        <circle cx="200" cy="105" r="5"/><circle cx="235" cy="121" r="5"/><circle cx="280" cy="142" r="5"/>
+        <circle cx="325" cy="154" r="5"/><circle cx="360" cy="170" r="5"/>
+        <line x1="70" y1="50" x2="365" y2="172" class="trend"/>
+      </svg>
+      <p>The Power BI scatterplot shows a downward trend: higher perceived risk is associated with lower adoption intention in the project dataset.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>06</span><h3>Average soil health by adoption</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Adopter</label><div class="track"><div class="fill" style="width:74%"></div></div><b>~3.7/5</b></div>
+        <div class="bar-row"><label>Non-adopter</label><div class="track"><div class="fill" style="width:60%"></div></div><b>~3.0/5</b></div>
+      </div>
+      <p>Synthetic adopters have a higher average soil-health score.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>07</span><h3>Average biodiversity index by adoption</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Adopter</label><div class="track"><div class="fill" style="width:77%"></div></div><b>~77/100</b></div>
+        <div class="bar-row"><label>Non-adopter</label><div class="track"><div class="fill" style="width:44%"></div></div><b>~44/100</b></div>
+      </div>
+      <p>The largest ecological contrast in the project dataset is the biodiversity index.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>08</span><h3>Average financial pressure by adoption</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Non-adopter</label><div class="track"><div class="fill" style="width:60%"></div></div><b>~3.0/5</b></div>
+        <div class="bar-row"><label>Adopter</label><div class="track"><div class="fill" style="width:47%"></div></div><b>~2.3–2.4/5</b></div>
+      </div>
+      <p>Non-adopters show greater simulated financial pressure.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>09</span><h3>Value-chain coordination</h3></div>
+      <div class="qual-viz">
+        <div><strong>Measure</strong><span>Average Value-Chain Coordination (1–5)</span></div>
+        <div><strong>Grouping</strong><span>Nature-Inclusive Adoption: Yes / No</span></div>
+        <div><strong>Status</strong><span>Included in the Power BI model; exact group means are not reproduced here because they were not recorded in the source notes.</span></div>
+      </div>
+      <p>This variable is retained because the research framework treats value-chain coordination as a potential transition mechanism.</p>
+    </article>
+
+    <article class="dash-card">
+      <div class="dash-head"><span>10</span><h3>Policy support and adoption</h3></div>
+      <div class="bar-chart">
+        <div class="bar-row"><label>Adopter</label><div class="track"><div class="fill" style="width:60%"></div></div><b>≈3/5</b></div>
+        <div class="bar-row"><label>Non-adopter</label><div class="track"><div class="fill" style="width:59%"></div></div><b>≈3/5</b></div>
+      </div>
+      <p>Policy-support scores are very similar between adopters and non-adopters in the project data.</p>
+    </article>
+  </div>
+
+  
+</section>
+
+<section id="literature" class="card">
+  <div class="eyebrow" style="color:var(--accent)">Literature synthesis</div>
+  <h2>A 100-paper evidence base</h2>
+  <h3>1. Nature-inclusive agriculture and Dutch transition dynamics</h3>
+  <p>Core Dutch studies frame nature-inclusive agriculture as a transformation challenge involving economic incentives, farmer action perspectives, knowledge, governance, cultural norms, opportunity costs and regime resistance <a class="cite" href="#ref-1" aria-label="Reference 1">[1]</a><a class="cite" href="#ref-3" aria-label="Reference 3">[3]</a><a class="cite" href="#ref-4" aria-label="Reference 4">[4]</a><a class="cite" href="#ref-5" aria-label="Reference 5">[5]</a><a class="cite" href="#ref-6" aria-label="Reference 6">[6]</a><a class="cite" href="#ref-7" aria-label="Reference 7">[7]</a>. This justifies treating adoption as embedded in a wider agrifood system rather than as an isolated farmer preference.</p>
+  <h3>2. Adoption is multi-dimensional</h3>
+  <p>Reviews and meta-analyses across sustainable agriculture, conservation agriculture, agri-environmental schemes, organic farming and ecological practices repeatedly identify interacting economic, behavioural, informational, farm-level and institutional determinants <a class="cite" href="#ref-9" aria-label="Reference 9">[9]</a><a class="cite" href="#ref-10" aria-label="Reference 10">[10]</a><a class="cite" href="#ref-11" aria-label="Reference 11">[11]</a><a class="cite" href="#ref-13" aria-label="Reference 13">[13]</a><a class="cite" href="#ref-14" aria-label="Reference 14">[14]</a><a class="cite" href="#ref-15" aria-label="Reference 15">[15]</a><a class="cite" href="#ref-16" aria-label="Reference 16">[16]</a><a class="cite" href="#ref-17" aria-label="Reference 17">[17]</a><a class="cite" href="#ref-18" aria-label="Reference 18">[18]</a><a class="cite" href="#ref-23" aria-label="Reference 23">[23]</a><a class="cite" href="#ref-25" aria-label="Reference 25">[25]</a><a class="cite" href="#ref-27" aria-label="Reference 27">[27]</a><a class="cite" href="#ref-42" aria-label="Reference 42">[42]</a><a class="cite" href="#ref-45" aria-label="Reference 45">[45]</a><a class="cite" href="#ref-50" aria-label="Reference 50">[50]</a><a class="cite" href="#ref-57" aria-label="Reference 57">[57]</a><a class="cite" href="#ref-58" aria-label="Reference 58">[58]</a><a class="cite" href="#ref-59" aria-label="Reference 59">[59]</a><a class="cite" href="#ref-63" aria-label="Reference 63">[63]</a>.</p>
+  <h3>3. Incentives and economic viability</h3>
+  <p>Financial mechanisms can alter transition feasibility, but adoption cannot be reduced to payment size alone. Opportunity costs, incentive design, ecosystem-service payments, voluntary versus mandatory policy and long-term business viability are all relevant <a class="cite" href="#ref-6" aria-label="Reference 6">[6]</a><a class="cite" href="#ref-7" aria-label="Reference 7">[7]</a><a class="cite" href="#ref-10" aria-label="Reference 10">[10]</a><a class="cite" href="#ref-17" aria-label="Reference 17">[17]</a><a class="cite" href="#ref-37" aria-label="Reference 37">[37]</a><a class="cite" href="#ref-38" aria-label="Reference 38">[38]</a><a class="cite" href="#ref-39" aria-label="Reference 39">[39]</a><a class="cite" href="#ref-43" aria-label="Reference 43">[43]</a><a class="cite" href="#ref-47" aria-label="Reference 47">[47]</a>.</p>
+  <h3>4. Behaviour, identity and social influence</h3>
+  <p>Farmers' choices are also social and psychological. Good-farmer identity, attitudes, trust, peer effects, social norms, self-identity and social capital can influence environmental management and adoption trajectories <a class="cite" href="#ref-5" aria-label="Reference 5">[5]</a><a class="cite" href="#ref-12" aria-label="Reference 12">[12]</a><a class="cite" href="#ref-26" aria-label="Reference 26">[26]</a><a class="cite" href="#ref-35" aria-label="Reference 35">[35]</a><a class="cite" href="#ref-36" aria-label="Reference 36">[36]</a><a class="cite" href="#ref-40" aria-label="Reference 40">[40]</a><a class="cite" href="#ref-41" aria-label="Reference 41">[41]</a><a class="cite" href="#ref-44" aria-label="Reference 44">[44]</a><a class="cite" href="#ref-46" aria-label="Reference 46">[46]</a><a class="cite" href="#ref-54" aria-label="Reference 54">[54]</a><a class="cite" href="#ref-55" aria-label="Reference 55">[55]</a><a class="cite" href="#ref-56" aria-label="Reference 56">[56]</a><a class="cite" href="#ref-60" aria-label="Reference 60">[60]</a><a class="cite" href="#ref-61" aria-label="Reference 61">[61]</a><a class="cite" href="#ref-62" aria-label="Reference 62">[62]</a><a class="cite" href="#ref-65" aria-label="Reference 65">[65]</a>.</p>
+  <h3>5. Learning, training and information</h3>
+  <p>Knowledge systems, extension, information quality, experiential learning, farmer-to-farmer learning and digital capabilities can affect how farmers evaluate innovations and uncertainty <a class="cite" href="#ref-22" aria-label="Reference 22">[22]</a><a class="cite" href="#ref-37" aria-label="Reference 37">[37]</a><a class="cite" href="#ref-48" aria-label="Reference 48">[48]</a><a class="cite" href="#ref-52" aria-label="Reference 52">[52]</a><a class="cite" href="#ref-53" aria-label="Reference 53">[53]</a><a class="cite" href="#ref-59" aria-label="Reference 59">[59]</a><a class="cite" href="#ref-64" aria-label="Reference 64">[64]</a><a class="cite" href="#ref-66" aria-label="Reference 66">[66]</a><a class="cite" href="#ref-67" aria-label="Reference 67">[67]</a>.</p>
+  <h3>6. Ecological outcomes and ecosystem services</h3>
+  <p>Biodiversity, ecosystem services and soil health provide the ecological outcome side of the transition. The literature supports examining whether changes in practice are associated with ecological functions, arthropod abundance, soil condition, soil carbon and multifunctionality <a class="cite" href="#ref-8" aria-label="Reference 8">[8]</a><a class="cite" href="#ref-28" aria-label="Reference 28">[28]</a><a class="cite" href="#ref-29" aria-label="Reference 29">[29]</a><a class="cite" href="#ref-30" aria-label="Reference 30">[30]</a><a class="cite" href="#ref-31" aria-label="Reference 31">[31]</a><a class="cite" href="#ref-32" aria-label="Reference 32">[32]</a><a class="cite" href="#ref-43" aria-label="Reference 43">[43]</a><a class="cite" href="#ref-44" aria-label="Reference 44">[44]</a><a class="cite" href="#ref-82" aria-label="Reference 82">[82]</a><a class="cite" href="#ref-84" aria-label="Reference 84">[84]</a><a class="cite" href="#ref-96" aria-label="Reference 96">[96]</a><a class="cite" href="#ref-97" aria-label="Reference 97">[97]</a><a class="cite" href="#ref-98" aria-label="Reference 98">[98]</a><a class="cite" href="#ref-99" aria-label="Reference 99">[99]</a><a class="cite" href="#ref-100" aria-label="Reference 100">[100]</a>.</p>
+  <h3>7. From determinants to transition systems</h3>
+  <p>Transition research moves the analysis from static determinants to interactions among niches, regimes, institutions, governance and scaling processes <a class="cite" href="#ref-24" aria-label="Reference 24">[24]</a><a class="cite" href="#ref-68" aria-label="Reference 68">[68]</a><a class="cite" href="#ref-69" aria-label="Reference 69">[69]</a><a class="cite" href="#ref-70" aria-label="Reference 70">[70]</a><a class="cite" href="#ref-71" aria-label="Reference 71">[71]</a><a class="cite" href="#ref-72" aria-label="Reference 72">[72]</a><a class="cite" href="#ref-73" aria-label="Reference 73">[73]</a><a class="cite" href="#ref-74" aria-label="Reference 74">[74]</a><a class="cite" href="#ref-75" aria-label="Reference 75">[75]</a><a class="cite" href="#ref-76" aria-label="Reference 76">[76]</a><a class="cite" href="#ref-77" aria-label="Reference 77">[77]</a><a class="cite" href="#ref-78" aria-label="Reference 78">[78]</a><a class="cite" href="#ref-79" aria-label="Reference 79">[79]</a><a class="cite" href="#ref-80" aria-label="Reference 80">[80]</a><a class="cite" href="#ref-81" aria-label="Reference 81">[81]</a><a class="cite" href="#ref-83" aria-label="Reference 83">[83]</a><a class="cite" href="#ref-85" aria-label="Reference 85">[85]</a><a class="cite" href="#ref-86" aria-label="Reference 86">[86]</a><a class="cite" href="#ref-87" aria-label="Reference 87">[87]</a>.</p>
+  <h3>8. Systems modelling and participation</h3>
+  <p>Participatory modelling, group model building, agent-based modelling and system dynamics offer methods for representing feedback, stakeholder assumptions, scenario behaviour and transition pathways <a class="cite" href="#ref-88" aria-label="Reference 88">[88]</a><a class="cite" href="#ref-89" aria-label="Reference 89">[89]</a><a class="cite" href="#ref-90" aria-label="Reference 90">[90]</a><a class="cite" href="#ref-91" aria-label="Reference 91">[91]</a><a class="cite" href="#ref-92" aria-label="Reference 92">[92]</a><a class="cite" href="#ref-93" aria-label="Reference 93">[93]</a><a class="cite" href="#ref-94" aria-label="Reference 94">[94]</a><a class="cite" href="#ref-95" aria-label="Reference 95">[95]</a>. These methods are particularly relevant for converting the exploratory dashboard into a causal-loop and simulation research programme.</p>
+</section>
+
+<section id="systems" class="card">
+  <div class="eyebrow" style="color:var(--accent)">Systems interpretation</div>
+  <h2>Hypothesised feedback structure</h2>
+  <p>The dashboard does not establish causality. Instead, it helps formulate relationships that can later be tested through interviews, workshops, causal-loop diagrams and simulation.</p>
+  <div class="loop">R1 Learning loop:
+Training ↑ → Knowledge ↑ → Perceived risk ↓ → Adoption intention ↑ → Adoption ↑ → Practical experience ↑ → Knowledge ↑
+
+B1 Financial constraint loop:
+Financial pressure ↑ → Perceived transition risk ↑ → Adoption intention ↓ → Adoption ↓
+
+R2 Social diffusion loop:
+Visible adoption ↑ → Peer influence / social legitimacy ↑ → Adoption intention ↑ → Adoption ↑
+
+R3 Ecological-benefit loop:
+Adoption ↑ → Soil health / biodiversity ↑ → Perceived long-term benefits ↑ → Adoption attractiveness ↑</div>
+  <p>These hypothesised loops draw conceptually on adoption, social-norm, transition and systems-modelling literatures <a class="cite" href="#ref-16" aria-label="Reference 16">[16]</a><a class="cite" href="#ref-40" aria-label="Reference 40">[40]</a><a class="cite" href="#ref-55" aria-label="Reference 55">[55]</a><a class="cite" href="#ref-68" aria-label="Reference 68">[68]</a><a class="cite" href="#ref-71" aria-label="Reference 71">[71]</a><a class="cite" href="#ref-74" aria-label="Reference 74">[74]</a><a class="cite" href="#ref-88" aria-label="Reference 88">[88]</a><a class="cite" href="#ref-89" aria-label="Reference 89">[89]</a><a class="cite" href="#ref-92" aria-label="Reference 92">[92]</a><a class="cite" href="#ref-94" aria-label="Reference 94">[94]</a><a class="cite" href="#ref-95" aria-label="Reference 95">[95]</a>.</p>
+</section>
+
+<section id="method" class="card">
+<p><strong>Dataset:</strong> A 120-observation project dataset was developed for the analysis, covering adoption, training, subsidies, market access, perceived risk, financial pressure, value-chain coordination, policy support, soil health and biodiversity indicators.</p>
+  <div class="eyebrow" style="color:var(--accent)">Method</div>
+  <h2>Exploratory analytical design</h2>
+  <p>The dataset contains 120 synthetic farmer records with variables for farm characteristics, nature-inclusive adoption, training, subsidy access, market-premium access, perceived risk, peer influence, buyer pressure, biodiversity awareness, expected profitability, financial pressure, digital literacy, soil health, biodiversity, income, investment, value-chain coordination, policy support and adoption intention.</p>
+  <p>Power BI is used as an exploratory visual-analytics layer to identify descriptive patterns. The literature base is then used to interpret whether the relationships represented in the prototype are theoretically plausible and to identify mechanisms requiring empirical validation.</p>
+</section>
+
+<section id="references">
+  <div class="card">
+    <div class="eyebrow" style="color:var(--accent)">Literature library</div>
+    <h2>All 100 DOI-linked articles used in the research framework</h2>
+    <p>This page deliberately retains all 100 sources from the project DOI library. The table is searchable and filterable. DOI links open the publisher/DOI landing page.</p>
+    
+    <div class="controls">
+      <input id="q" type="search" placeholder="Search title, journal, DOI or theme…" aria-label="Search references">
+      <select id="theme" aria-label="Filter by theme"><option value="">All themes</option><option value="adoption / sustainable intensification">Adoption / sustainable intensification (1)</option>
+<option value="adoption determinants / meta-analysis">Adoption determinants / meta-analysis (1)</option>
+<option value="adoption willingness / meta-analysis">Adoption willingness / meta-analysis (1)</option>
+<option value="agent-based modelling / transitions">Agent-based modelling / transitions (1)</option>
+<option value="agri-environmental schemes / adoption">Agri-environmental schemes / adoption (1)</option>
+<option value="agri-environmental schemes / attitudes">Agri-environmental schemes / attitudes (1)</option>
+<option value="agri-food transitions / food security">Agri-food transitions / food security (1)</option>
+<option value="agri-food transitions / research gaps">Agri-food transitions / research gaps (1)</option>
+<option value="agricultural innovation systems / scaling">Agricultural innovation systems / scaling (1)</option>
+<option value="agricultural transitions / sustainability">Agricultural transitions / sustainability (1)</option>
+<option value="agriculture 4.0 / transitions">Agriculture 4.0 / transitions (1)</option>
+<option value="agroecology / adoption drivers">Agroecology / adoption drivers (1)</option>
+<option value="agroecology / scaling">Agroecology / scaling (1)</option>
+<option value="attitudes / organic farming">Attitudes / organic farming (1)</option>
+<option value="behaviour / opportunity costs">Behaviour / opportunity costs (1)</option>
+<option value="behaviour / policy">Behaviour / policy (1)</option>
+<option value="best management practices / adoption">Best management practices / adoption (2)</option>
+<option value="biodiversity / agri-environment schemes">Biodiversity / agri-environment schemes (1)</option>
+<option value="biodiversity / farming practices">Biodiversity / farming practices (1)</option>
+<option value="biodiversity / productivity">Biodiversity / productivity (1)</option>
+<option value="biodiversity / values / perceptions">Biodiversity / values / perceptions (1)</option>
+<option value="biodiversity indicators / aes">Biodiversity indicators / AES (1)</option>
+<option value="conservation adoption / extension">Conservation adoption / extension (1)</option>
+<option value="conservation adoption / systems">Conservation adoption / systems (1)</option>
+<option value="conservation agriculture / adoption">Conservation agriculture / adoption (1)</option>
+<option value="conservation agriculture / context">Conservation agriculture / context (1)</option>
+<option value="decision-making / farm performance">Decision-making / farm performance (1)</option>
+<option value="digital literacy / policy">Digital literacy / policy (1)</option>
+<option value="eu agri-environmental participation">EU agri-environmental participation (1)</option>
+<option value="eu agri-environmental schemes">EU agri-environmental schemes (1)</option>
+<option value="eu behaviour / adoption">EU behaviour / adoption (1)</option>
+<option value="ecological practices / adoption map">Ecological practices / adoption map (1)</option>
+<option value="economic viability / opportunity costs">Economic viability / opportunity costs (1)</option>
+<option value="ecosystem services / multifunctionality">Ecosystem services / multifunctionality (1)</option>
+<option value="environmental attitudes / awareness">Environmental attitudes / awareness (1)</option>
+<option value="farmer identity / advisory services">Farmer identity / advisory services (1)</option>
+<option value="farmer identity / conservation">Farmer identity / conservation (1)</option>
+<option value="farmer identity / cultural norms">Farmer identity / cultural norms (1)</option>
+<option value="farmer identity / environmental response">Farmer identity / environmental response (1)</option>
+<option value="farmer identity / social norms">Farmer identity / social norms (1)</option>
+<option value="farmer-to-farmer learning">Farmer-to-farmer learning (1)</option>
+<option value="financial incentives / policy packages">Financial incentives / policy packages (1)</option>
+<option value="food systems / sustainability transitions">Food systems / sustainability transitions (1)</option>
+<option value="food systems / transitions / value chains">Food systems / transitions / value chains (1)</option>
+<option value="food-system sustainability / environmental limits">Food-system sustainability / environmental limits (1)</option>
+<option value="food-system transformation / policy">Food-system transformation / policy (1)</option>
+<option value="global sustainable practice adoption">Global sustainable practice adoption (1)</option>
+<option value="governance / farmer participation">Governance / farmer participation (1)</option>
+<option value="group model building / systems thinking">Group model building / systems thinking (1)</option>
+<option value="incentives / sustainable practice adoption">Incentives / sustainable practice adoption (1)</option>
+<option value="institutions / participation">Institutions / participation (1)</option>
+<option value="intention / biodiversity / soil">Intention / biodiversity / soil (1)</option>
+<option value="mlp / agri-food systems">MLP / agri-food systems (1)</option>
+<option value="motivation / cooperation">Motivation / cooperation (1)</option>
+<option value="multi-level perspective / transitions">Multi-level perspective / transitions (1)</option>
+<option value="nature-inclusive agriculture / governance">Nature-inclusive agriculture / governance (1)</option>
+<option value="nature-inclusive agriculture / systemic barriers">Nature-inclusive agriculture / systemic barriers (1)</option>
+<option value="organic adoption / economic-social factors">Organic adoption / economic-social factors (1)</option>
+<option value="organic adoption / emerging economies">Organic adoption / emerging economies (1)</option>
+<option value="organic adoption / risk / objectives">Organic adoption / risk / objectives (1)</option>
+<option value="participatory modelling / agri-environment">Participatory modelling / agri-environment (1)</option>
+<option value="participatory modelling / food systems">Participatory modelling / food systems (1)</option>
+<option value="payments / training / information">Payments / training / information (1)</option>
+<option value="payments for ecosystem services">Payments for ecosystem services (1)</option>
+<option value="peer influence / cooperatives">Peer influence / cooperatives (1)</option>
+<option value="peer influence / intention-behaviour gap">Peer influence / intention-behaviour gap (1)</option>
+<option value="policy / voluntary vs mandatory">Policy / voluntary vs mandatory (1)</option>
+<option value="regenerative agriculture / soil / climate">Regenerative agriculture / soil / climate (1)</option>
+<option value="regenerative agriculture / soil health">Regenerative agriculture / soil health (3)</option>
+<option value="risk / information / preferences">Risk / information / preferences (1)</option>
+<option value="self-identity / intrinsic motivation">Self-identity / intrinsic motivation (1)</option>
+<option value="social capital / participation">Social capital / participation (1)</option>
+<option value="social norms / adoption">Social norms / adoption (1)</option>
+<option value="social psychology / farmer identity">Social psychology / farmer identity (1)</option>
+<option value="socio-psychological adoption factors">Socio-psychological adoption factors (1)</option>
+<option value="soil carbon / european cropland">Soil carbon / European cropland (1)</option>
+<option value="soil carbon / organic farming">Soil carbon / organic farming (1)</option>
+<option value="soil health / agroecological transition">Soil health / agroecological transition (1)</option>
+<option value="soil health / policy">Soil health / policy (1)</option>
+<option value="soil health / sustainable farming">Soil health / sustainable farming (1)</option>
+<option value="strategic niche management">Strategic niche management (1)</option>
+<option value="sustainability transitions / mlp">Sustainability transitions / MLP (1)</option>
+<option value="sustainability transitions / theory">Sustainability transitions / theory (1)</option>
+<option value="system dynamics / few nexus">System dynamics / FEW nexus (1)</option>
+<option value="system dynamics / causal loops">System dynamics / causal loops (1)</option>
+<option value="system dynamics / food-system transformation">System dynamics / food-system transformation (1)</option>
+<option value="system dynamics / value chains">System dynamics / value chains (1)</option>
+<option value="technology adoption / precision agriculture">Technology adoption / precision agriculture (1)</option>
+<option value="theory of planned behaviour / aes">Theory of Planned Behaviour / AES (1)</option>
+<option value="training / experiential learning">Training / experiential learning (1)</option>
+<option value="training / information literacy">Training / information literacy (1)</option>
+<option value="transition frameworks">Transition frameworks (1)</option>
+<option value="transition governance">Transition governance (1)</option>
+<option value="transition management / governance">Transition management / governance (1)</option>
+<option value="transition pathways">Transition pathways (1)</option>
+<option value="trust / attitudes / policy">Trust / attitudes / policy (1)</option>
+<option value="trust / social capital / contracts">Trust / social capital / contracts (1)</option></select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Article</th><th>Theme</th><th>DOI / link</th></tr></thead>
+        <tbody id="refs">
+<tr id="ref-1" data-theme="nature-inclusive agriculture / systemic barriers" data-search="five mechanisms blocking the transition towards ‘nature-inclusive’ agriculture: a systemic analysis of dutch dairy farming agricultural systems 10.1016/j.agsy.2021.103280 nature-inclusive agriculture / systemic barriers">
+<td class="ref-no">1</td>
+<td><strong>Five mechanisms blocking the transition towards ‘nature-inclusive’ agriculture: A systemic analysis of Dutch dairy farming</strong><div class="ref-meta">Agricultural Systems · 2022</div></td>
+<td>Nature-inclusive agriculture / systemic barriers</td>
+<td><a href="https://doi.org/10.1016/j.agsy.2021.103280" target="_blank" rel="noopener">10.1016/j.agsy.2021.103280</a></td>
+</tr>
+<tr id="ref-2" data-theme="food-system sustainability / environmental limits" data-search="options for keeping the food system within environmental limits nature 10.1038/s41586-018-0594-0 food-system sustainability / environmental limits">
+<td class="ref-no">2</td>
+<td><strong>Options for keeping the food system within environmental limits</strong><div class="ref-meta">Nature · 2018</div></td>
+<td>Food-system sustainability / environmental limits</td>
+<td><a href="https://doi.org/10.1038/s41586-018-0594-0" target="_blank" rel="noopener">10.1038/s41586-018-0594-0</a></td>
+</tr>
+<tr id="ref-3" data-theme="nature-inclusive agriculture / governance" data-search="governing the transformation towards ‘nature-inclusive’ agriculture: insights from the netherlands international journal of agricultural sustainability 10.1080/14735903.2017.1312096 nature-inclusive agriculture / governance">
+<td class="ref-no">3</td>
+<td><strong>Governing the transformation towards ‘nature-inclusive’ agriculture: insights from the Netherlands</strong><div class="ref-meta">International Journal of Agricultural Sustainability · 2017</div></td>
+<td>Nature-inclusive agriculture / governance</td>
+<td><a href="https://doi.org/10.1080/14735903.2017.1312096" target="_blank" rel="noopener">10.1080/14735903.2017.1312096</a></td>
+</tr>
+<tr id="ref-4" data-theme="governance / farmer participation" data-search="promoting nature conservation by dutch farmers: a governance perspective international journal of agricultural sustainability 10.1080/14735903.2016.1232015 governance / farmer participation">
+<td class="ref-no">4</td>
+<td><strong>Promoting nature conservation by Dutch farmers: a governance perspective</strong><div class="ref-meta">International Journal of Agricultural Sustainability · 2017</div></td>
+<td>Governance / farmer participation</td>
+<td><a href="https://doi.org/10.1080/14735903.2016.1232015" target="_blank" rel="noopener">10.1080/14735903.2016.1232015</a></td>
+</tr>
+<tr id="ref-5" data-theme="farmer identity / social norms" data-search="can a ‘good farmer’ be nature-inclusive? shifting cultural norms in farming in the netherlands journal of rural studies 10.1016/j.jrurstud.2021.10.011 farmer identity / social norms">
+<td class="ref-no">5</td>
+<td><strong>Can a ‘good farmer’ be nature-inclusive? Shifting cultural norms in farming in The Netherlands</strong><div class="ref-meta">Journal of Rural Studies · 2021</div></td>
+<td>Farmer identity / social norms</td>
+<td><a href="https://doi.org/10.1016/j.jrurstud.2021.10.011" target="_blank" rel="noopener">10.1016/j.jrurstud.2021.10.011</a></td>
+</tr>
+<tr id="ref-6" data-theme="financial incentives / policy packages" data-search="incentivizing a regime change in dutch agriculture environmental innovation and societal transitions 10.1016/j.eist.2022.08.001 financial incentives / policy packages">
+<td class="ref-no">6</td>
+<td><strong>Incentivizing a regime change in Dutch agriculture</strong><div class="ref-meta">Environmental Innovation and Societal Transitions · 2022</div></td>
+<td>Financial incentives / policy packages</td>
+<td><a href="https://doi.org/10.1016/j.eist.2022.08.001" target="_blank" rel="noopener">10.1016/j.eist.2022.08.001</a></td>
+</tr>
+<tr id="ref-7" data-theme="economic viability / opportunity costs" data-search="quantifying the opportunity costs of nature-inclusive agriculture in the netherlands agricultural systems 10.1016/j.agsy.2026.104633 economic viability / opportunity costs">
+<td class="ref-no">7</td>
+<td><strong>Quantifying the opportunity costs of nature-inclusive agriculture in the Netherlands</strong><div class="ref-meta">Agricultural Systems · 2026</div></td>
+<td>Economic viability / opportunity costs</td>
+<td><a href="https://doi.org/10.1016/j.agsy.2026.104633" target="_blank" rel="noopener">10.1016/j.agsy.2026.104633</a></td>
+</tr>
+<tr id="ref-8" data-theme="biodiversity / productivity" data-search="nature-inclusive farming results in higher arthropod abundance, without compromising agricultural productivity agriculture, ecosystems &amp; environment 10.1016/j.agee.2025.110033 biodiversity / productivity">
+<td class="ref-no">8</td>
+<td><strong>Nature-inclusive farming results in higher arthropod abundance, without compromising agricultural productivity</strong><div class="ref-meta">Agriculture, Ecosystems &amp; Environment · 2026</div></td>
+<td>Biodiversity / productivity</td>
+<td><a href="https://doi.org/10.1016/j.agee.2025.110033" target="_blank" rel="noopener">10.1016/j.agee.2025.110033</a></td>
+</tr>
+<tr id="ref-9" data-theme="agri-environmental schemes / adoption" data-search="what drives farmers’ participation in eu agri-environmental schemes? results from a qualitative meta-analysis environmental science &amp; policy 10.1016/j.envsci.2015.06.002 agri-environmental schemes / adoption">
+<td class="ref-no">9</td>
+<td><strong>What drives farmers’ participation in EU agri-environmental schemes? Results from a qualitative meta-analysis</strong><div class="ref-meta">Environmental Science &amp; Policy · 2015</div></td>
+<td>Agri-environmental schemes / adoption</td>
+<td><a href="https://doi.org/10.1016/j.envsci.2015.06.002" target="_blank" rel="noopener">10.1016/j.envsci.2015.06.002</a></td>
+</tr>
+<tr id="ref-10" data-theme="incentives / sustainable practice adoption" data-search="a scoping review on incentives for adoption of sustainable agricultural practices and their outcomes nature sustainability 10.1038/s41893-020-00617-y incentives / sustainable practice adoption">
+<td class="ref-no">10</td>
+<td><strong>A scoping review on incentives for adoption of sustainable agricultural practices and their outcomes</strong><div class="ref-meta">Nature Sustainability · 2020</div></td>
+<td>Incentives / sustainable practice adoption</td>
+<td><a href="https://doi.org/10.1038/s41893-020-00617-y" target="_blank" rel="noopener">10.1038/s41893-020-00617-y</a></td>
+</tr>
+<tr id="ref-11" data-theme="agri-environmental schemes / attitudes" data-search="farmer participation in agri-environmental schemes: towards conservation-oriented thinking? sociologia ruralis 10.1111/1467-9523.00181 agri-environmental schemes / attitudes">
+<td class="ref-no">11</td>
+<td><strong>Farmer Participation in Agri-Environmental Schemes: Towards Conservation-Oriented Thinking?</strong><div class="ref-meta">Sociologia Ruralis · 2001</div></td>
+<td>Agri-environmental schemes / attitudes</td>
+<td><a href="https://doi.org/10.1111/1467-9523.00181" target="_blank" rel="noopener">10.1111/1467-9523.00181</a></td>
+</tr>
+<tr id="ref-12" data-theme="social capital / participation" data-search="farmer participation in agri-environmental schemes: regionalisation and the role of bridging social capital land use policy 10.1016/j.landusepol.2016.10.026 social capital / participation">
+<td class="ref-no">12</td>
+<td><strong>Farmer participation in agri-environmental schemes: Regionalisation and the role of bridging social capital</strong><div class="ref-meta">Land Use Policy · 2017</div></td>
+<td>Social capital / participation</td>
+<td><a href="https://doi.org/10.1016/j.landusepol.2016.10.026" target="_blank" rel="noopener">10.1016/j.landusepol.2016.10.026</a></td>
+</tr>
+<tr id="ref-13" data-theme="institutions / participation" data-search="local institutions and farmer participation in agri-environmental schemes journal of rural studies 10.1016/j.jrurstud.2014.11.011 institutions / participation">
+<td class="ref-no">13</td>
+<td><strong>Local institutions and farmer participation in agri-environmental schemes</strong><div class="ref-meta">Journal of Rural Studies · 2015</div></td>
+<td>Institutions / participation</td>
+<td><a href="https://doi.org/10.1016/j.jrurstud.2014.11.011" target="_blank" rel="noopener">10.1016/j.jrurstud.2014.11.011</a></td>
+</tr>
+<tr id="ref-14" data-theme="adoption / sustainable intensification" data-search="farmer adoption of sustainable intensification technologies in the maize systems of the global south: a review agronomy for sustainable development 10.1007/s13593-020-00658-9 adoption / sustainable intensification">
+<td class="ref-no">14</td>
+<td><strong>Farmer adoption of sustainable intensification technologies in the maize systems of the Global South: A review</strong><div class="ref-meta">Agronomy for Sustainable Development · 2021</div></td>
+<td>Adoption / sustainable intensification</td>
+<td><a href="https://doi.org/10.1007/s13593-020-00658-9" target="_blank" rel="noopener">10.1007/s13593-020-00658-9</a></td>
+</tr>
+<tr id="ref-15" data-theme="adoption willingness / meta-analysis" data-search="farmers’ willingness to adopt sustainable agricultural practices: a meta-analysis plos sustainability and transformation 10.1371/journal.pstr.0000037 adoption willingness / meta-analysis">
+<td class="ref-no">15</td>
+<td><strong>Farmers’ willingness to adopt sustainable agricultural practices: A meta-analysis</strong><div class="ref-meta">PLOS Sustainability and Transformation · 2023</div></td>
+<td>Adoption willingness / meta-analysis</td>
+<td><a href="https://doi.org/10.1371/journal.pstr.0000037" target="_blank" rel="noopener">10.1371/journal.pstr.0000037</a></td>
+</tr>
+<tr id="ref-16" data-theme="behaviour / policy" data-search="behavioural factors affecting the adoption of sustainable farming practices: a policy-oriented review european review of agricultural economics 10.1093/erae/jbz019 behaviour / policy">
+<td class="ref-no">16</td>
+<td><strong>Behavioural factors affecting the adoption of sustainable farming practices: a policy-oriented review</strong><div class="ref-meta">European Review of Agricultural Economics · 2019</div></td>
+<td>Behaviour / policy</td>
+<td><a href="https://doi.org/10.1093/erae/jbz019" target="_blank" rel="noopener">10.1093/erae/jbz019</a></td>
+</tr>
+<tr id="ref-17" data-theme="behaviour / opportunity costs" data-search="the role of behavioural factors and opportunity costs in farmers’ participation in voluntary agri-environmental schemes: a systematic review journal of agricultural economics 10.1111/1477-9552.12538 behaviour / opportunity costs">
+<td class="ref-no">17</td>
+<td><strong>The role of behavioural factors and opportunity costs in farmers’ participation in voluntary agri-environmental schemes: A systematic review</strong><div class="ref-meta">Journal of Agricultural Economics · 2023</div></td>
+<td>Behaviour / opportunity costs</td>
+<td><a href="https://doi.org/10.1111/1477-9552.12538" target="_blank" rel="noopener">10.1111/1477-9552.12538</a></td>
+</tr>
+<tr id="ref-18" data-theme="conservation agriculture / adoption" data-search="farmers’ adoption of conservation agriculture: a review and synthesis of recent research food policy 10.1016/j.foodpol.2006.01.003 conservation agriculture / adoption">
+<td class="ref-no">18</td>
+<td><strong>Farmers’ adoption of conservation agriculture: A review and synthesis of recent research</strong><div class="ref-meta">Food Policy · 2007</div></td>
+<td>Conservation agriculture / adoption</td>
+<td><a href="https://doi.org/10.1016/j.foodpol.2006.01.003" target="_blank" rel="noopener">10.1016/j.foodpol.2006.01.003</a></td>
+</tr>
+<tr id="ref-19" data-theme="organic adoption / risk / objectives" data-search="farmers’ objectives as determinants of organic farming adoption: the case of catalonian vineyard production agricultural economics 10.1111/j.1574-0862.2010.00454.x organic adoption / risk / objectives">
+<td class="ref-no">19</td>
+<td><strong>Farmers’ objectives as determinants of organic farming adoption: the case of Catalonian vineyard production</strong><div class="ref-meta">Agricultural Economics · 2010</div></td>
+<td>Organic adoption / risk / objectives</td>
+<td><a href="https://doi.org/10.1111/j.1574-0862.2010.00454.x" target="_blank" rel="noopener">10.1111/j.1574-0862.2010.00454.x</a></td>
+</tr>
+<tr id="ref-20" data-theme="organic adoption / emerging economies" data-search="what affects organic farming adoption in emerging economies? a missing link in the indian agriculture sector international journal of emerging markets 10.1108/ijoem-03-2023-0390 organic adoption / emerging economies">
+<td class="ref-no">20</td>
+<td><strong>What affects organic farming adoption in emerging economies? A missing link in the Indian agriculture sector</strong><div class="ref-meta">International Journal of Emerging Markets · 2023</div></td>
+<td>Organic adoption / emerging economies</td>
+<td><a href="https://doi.org/10.1108/IJOEM-03-2023-0390" target="_blank" rel="noopener">10.1108/IJOEM-03-2023-0390</a></td>
+</tr>
+<tr id="ref-21" data-theme="organic adoption / economic-social factors" data-search="decisional factors driving farmers to adopt organic farming in india: a cross-sectional study international journal of social economics 10.1108/ijse-05-2018-0282 organic adoption / economic-social factors">
+<td class="ref-no">21</td>
+<td><strong>Decisional factors driving farmers to adopt organic farming in India: a cross-sectional study</strong><div class="ref-meta">International Journal of Social Economics · 2019</div></td>
+<td>Organic adoption / economic-social factors</td>
+<td><a href="https://doi.org/10.1108/IJSE-05-2018-0282" target="_blank" rel="noopener">10.1108/IJSE-05-2018-0282</a></td>
+</tr>
+<tr id="ref-22" data-theme="technology adoption / precision agriculture" data-search="drivers of precision agriculture technologies adoption: a literature review procedia technology 10.1016/j.protcy.2013.11.010 technology adoption / precision agriculture">
+<td class="ref-no">22</td>
+<td><strong>Drivers of Precision Agriculture Technologies Adoption: A Literature Review</strong><div class="ref-meta">Procedia Technology · 2013</div></td>
+<td>Technology adoption / precision agriculture</td>
+<td><a href="https://doi.org/10.1016/j.protcy.2013.11.010" target="_blank" rel="noopener">10.1016/j.protcy.2013.11.010</a></td>
+</tr>
+<tr id="ref-23" data-theme="conservation agriculture / context" data-search="from adoption claims to understanding farmers and contexts: a literature review of conservation agriculture adoption among smallholder farmers in southern africa agriculture, ecosystems &amp; environment 10.1016/j.agee.2013.08.008 conservation agriculture / context">
+<td class="ref-no">23</td>
+<td><strong>From adoption claims to understanding farmers and contexts: A literature review of Conservation Agriculture adoption among smallholder farmers in southern Africa</strong><div class="ref-meta">Agriculture, Ecosystems &amp; Environment · 2014</div></td>
+<td>Conservation agriculture / context</td>
+<td><a href="https://doi.org/10.1016/j.agee.2013.08.008" target="_blank" rel="noopener">10.1016/j.agee.2013.08.008</a></td>
+</tr>
+<tr id="ref-24" data-theme="sustainability transitions / mlp" data-search="the multi-level perspective in research on sustainability transitions in agriculture and food systems: a systematic review agriculture 10.3390/agriculture9040074 sustainability transitions / mlp">
+<td class="ref-no">24</td>
+<td><strong>The Multi-Level Perspective in Research on Sustainability Transitions in Agriculture and Food Systems: A Systematic Review</strong><div class="ref-meta">Agriculture · 2019</div></td>
+<td>Sustainability transitions / MLP</td>
+<td><a href="https://doi.org/10.3390/agriculture9040074" target="_blank" rel="noopener">10.3390/agriculture9040074</a></td>
+</tr>
+<tr id="ref-25" data-theme="global sustainable practice adoption" data-search="a review and some reflections on farmers&#x27; adoption of sustainable agricultural practices worldwide science of the total environment 10.1016/j.scitotenv.2020.138831 global sustainable practice adoption">
+<td class="ref-no">25</td>
+<td><strong>A review and some reflections on farmers&#x27; adoption of sustainable agricultural practices worldwide</strong><div class="ref-meta">Science of the Total Environment · 2020</div></td>
+<td>Global sustainable practice adoption</td>
+<td><a href="https://doi.org/10.1016/j.scitotenv.2020.138831" target="_blank" rel="noopener">10.1016/j.scitotenv.2020.138831</a></td>
+</tr>
+<tr id="ref-26" data-theme="attitudes / organic farming" data-search="farmers’ attitudes towards conventional and organic farming in indian punjab: a behavioural analysis journal of asian and african studies 10.1177/00219096221113582 attitudes / organic farming">
+<td class="ref-no">26</td>
+<td><strong>Farmers’ Attitudes Towards Conventional and Organic Farming in Indian Punjab: A Behavioural Analysis</strong><div class="ref-meta">Journal of Asian and African Studies · 2024</div></td>
+<td>Attitudes / organic farming</td>
+<td><a href="https://doi.org/10.1177/00219096221113582" target="_blank" rel="noopener">10.1177/00219096221113582</a></td>
+</tr>
+<tr id="ref-27" data-theme="ecological practices / adoption map" data-search="farmers&#x27; adoption of ecological practices: a systematic literature map journal of agricultural economics 10.1111/1477-9552.12545 ecological practices / adoption map">
+<td class="ref-no">27</td>
+<td><strong>Farmers&#x27; adoption of ecological practices: A systematic literature map</strong><div class="ref-meta">Journal of Agricultural Economics · 2024</div></td>
+<td>Ecological practices / adoption map</td>
+<td><a href="https://doi.org/10.1111/1477-9552.12545" target="_blank" rel="noopener">10.1111/1477-9552.12545</a></td>
+</tr>
+<tr id="ref-28" data-theme="regenerative agriculture / soil health" data-search="regenerative agriculture – the soil is the base global food security 10.1016/j.gfs.2020.100404 regenerative agriculture / soil health">
+<td class="ref-no">28</td>
+<td><strong>Regenerative agriculture – the soil is the base</strong><div class="ref-meta">Global Food Security · 2020</div></td>
+<td>Regenerative agriculture / soil health</td>
+<td><a href="https://doi.org/10.1016/j.gfs.2020.100404" target="_blank" rel="noopener">10.1016/j.gfs.2020.100404</a></td>
+</tr>
+<tr id="ref-29" data-theme="regenerative agriculture / soil health" data-search="regenerative agriculture—a literature review on the practices and mechanisms used to improve soil health sustainability 10.3390/su15032338 regenerative agriculture / soil health">
+<td class="ref-no">29</td>
+<td><strong>Regenerative Agriculture—A Literature Review on the Practices and Mechanisms Used to Improve Soil Health</strong><div class="ref-meta">Sustainability · 2023</div></td>
+<td>Regenerative agriculture / soil health</td>
+<td><a href="https://doi.org/10.3390/su15032338" target="_blank" rel="noopener">10.3390/su15032338</a></td>
+</tr>
+<tr id="ref-30" data-theme="soil health / policy" data-search="soil health: research, practice and policy for a more regenerative agriculture applied soil ecology 10.1016/s0929-1393(00)00074-3 soil health / policy">
+<td class="ref-no">30</td>
+<td><strong>Soil health: research, practice and policy for a more regenerative agriculture</strong><div class="ref-meta">Applied Soil Ecology · 2000</div></td>
+<td>Soil health / policy</td>
+<td><a href="https://doi.org/10.1016/S0929-1393(00)00074-3" target="_blank" rel="noopener">10.1016/S0929-1393(00)00074-3</a></td>
+</tr>
+<tr id="ref-31" data-theme="regenerative agriculture / soil / climate" data-search="a systematic review of regenerative agriculture for soil health and climate change mitigation discover sustainability 10.1007/s43621-026-03620-z regenerative agriculture / soil / climate">
+<td class="ref-no">31</td>
+<td><strong>A systematic review of regenerative agriculture for soil health and climate change mitigation</strong><div class="ref-meta">Discover Sustainability · 2026</div></td>
+<td>Regenerative agriculture / soil / climate</td>
+<td><a href="https://doi.org/10.1007/s43621-026-03620-z" target="_blank" rel="noopener">10.1007/s43621-026-03620-z</a></td>
+</tr>
+<tr id="ref-32" data-theme="biodiversity / farming practices" data-search="effects of agricultural practices on biodiversity: a review journal of sustainable agriculture and environment 10.1002/sae2.70152 biodiversity / farming practices">
+<td class="ref-no">32</td>
+<td><strong>Effects of Agricultural Practices on Biodiversity: A Review</strong><div class="ref-meta">Journal of Sustainable Agriculture and Environment · 2026</div></td>
+<td>Biodiversity / farming practices</td>
+<td><a href="https://doi.org/10.1002/sae2.70152" target="_blank" rel="noopener">10.1002/sae2.70152</a></td>
+</tr>
+<tr id="ref-33" data-theme="eu agri-environmental participation" data-search="what matters most in determining european farmers’ participation in agri-environmental measures? a systematic review of the quantitative literature land use policy 10.1016/j.landusepol.2024.107094 eu agri-environmental participation">
+<td class="ref-no">33</td>
+<td><strong>What matters most in determining European farmers’ participation in agri-environmental measures? A systematic review of the quantitative literature</strong><div class="ref-meta">Land Use Policy · 2024</div></td>
+<td>EU agri-environmental participation</td>
+<td><a href="https://doi.org/10.1016/j.landusepol.2024.107094" target="_blank" rel="noopener">10.1016/j.landusepol.2024.107094</a></td>
+</tr>
+<tr id="ref-34" data-theme="eu agri-environmental schemes" data-search="motivations for farmers’ participation in agri-environmental scheme in the eu, literature review open agriculture 10.1515/opag-2022-0379 eu agri-environmental schemes">
+<td class="ref-no">34</td>
+<td><strong>Motivations for farmers’ participation in agri-environmental scheme in the EU, literature review</strong><div class="ref-meta">Open Agriculture · 2024</div></td>
+<td>EU agri-environmental schemes</td>
+<td><a href="https://doi.org/10.1515/opag-2022-0379" target="_blank" rel="noopener">10.1515/opag-2022-0379</a></td>
+</tr>
+<tr id="ref-35" data-theme="peer influence / intention-behaviour gap" data-search="peer effects and ecological rationality: a study on the intention–behaviour discrepancy in rice farmers’ organic fertiliser adoption for agricultural sustainability sustainability 10.3390/su18178637 peer influence / intention-behaviour gap">
+<td class="ref-no">35</td>
+<td><strong>Peer Effects and Ecological Rationality: A Study on the Intention–Behaviour Discrepancy in Rice Farmers’ Organic Fertiliser Adoption for Agricultural Sustainability</strong><div class="ref-meta">Sustainability · 2026</div></td>
+<td>Peer influence / intention-behaviour gap</td>
+<td><a href="https://doi.org/10.3390/su18178637" target="_blank" rel="noopener">10.3390/su18178637</a></td>
+</tr>
+<tr id="ref-36" data-theme="peer influence / cooperatives" data-search="how agricultural cooperatives facilitate sustainable technology adoption in china: resource access or peer influence? journal of agribusiness in developing and emerging economies 10.1108/jadee-08-2025-0383 peer influence / cooperatives">
+<td class="ref-no">36</td>
+<td><strong>How agricultural cooperatives facilitate sustainable technology adoption in China: resource access or peer influence?</strong><div class="ref-meta">Journal of Agribusiness in Developing and Emerging Economies · 2026</div></td>
+<td>Peer influence / cooperatives</td>
+<td><a href="https://doi.org/10.1108/JADEE-08-2025-0383" target="_blank" rel="noopener">10.1108/JADEE-08-2025-0383</a></td>
+</tr>
+<tr id="ref-37" data-theme="payments / training / information" data-search="payment for ecosystem services: the roles of positive incentives and information sharing in stimulating adoption of silvopastoral conservation practices agriculture, ecosystems &amp; environment 10.1016/j.agee.2012.04.017 payments / training / information">
+<td class="ref-no">37</td>
+<td><strong>Payment for Ecosystem Services: The roles of positive incentives and information sharing in stimulating adoption of silvopastoral conservation practices</strong><div class="ref-meta">Agriculture, Ecosystems &amp; Environment · 2012</div></td>
+<td>Payments / training / information</td>
+<td><a href="https://doi.org/10.1016/j.agee.2012.04.017" target="_blank" rel="noopener">10.1016/j.agee.2012.04.017</a></td>
+</tr>
+<tr id="ref-38" data-theme="payments for ecosystem services" data-search="farmers’ willingness to accept payments for ecosystem services on agricultural land: the case of climate-smart agroforestry in ethiopia ecosystem services 10.1016/j.ecoser.2019.100964 payments for ecosystem services">
+<td class="ref-no">38</td>
+<td><strong>Farmers’ willingness to accept payments for ecosystem services on agricultural land: The case of climate-smart agroforestry in Ethiopia</strong><div class="ref-meta">Ecosystem Services · 2019</div></td>
+<td>Payments for ecosystem services</td>
+<td><a href="https://doi.org/10.1016/j.ecoser.2019.100964" target="_blank" rel="noopener">10.1016/j.ecoser.2019.100964</a></td>
+</tr>
+<tr id="ref-39" data-theme="policy / voluntary vs mandatory" data-search="willing or complying? the delicate interplay between voluntary and mandatory interventions to promote farmers&#x27; environmental behavior food policy 10.1016/j.foodpol.2023.102481 policy / voluntary vs mandatory">
+<td class="ref-no">39</td>
+<td><strong>Willing or complying? The delicate interplay between voluntary and mandatory interventions to promote farmers&#x27; environmental behavior</strong><div class="ref-meta">Food Policy · 2023</div></td>
+<td>Policy / voluntary vs mandatory</td>
+<td><a href="https://doi.org/10.1016/j.foodpol.2023.102481" target="_blank" rel="noopener">10.1016/j.foodpol.2023.102481</a></td>
+</tr>
+<tr id="ref-40" data-theme="farmer identity / conservation" data-search="reconstructing the good farmer identity: shifts in farmer identities and farm management practices to improve water quality agriculture and human values 10.1007/s10460-012-9381-y farmer identity / conservation">
+<td class="ref-no">40</td>
+<td><strong>Reconstructing the good farmer identity: shifts in farmer identities and farm management practices to improve water quality</strong><div class="ref-meta">Agriculture and Human Values · 2013</div></td>
+<td>Farmer identity / conservation</td>
+<td><a href="https://doi.org/10.1007/s10460-012-9381-y" target="_blank" rel="noopener">10.1007/s10460-012-9381-y</a></td>
+</tr>
+<tr id="ref-41" data-theme="social norms / adoption" data-search="how do different types of social norms relate to farmers’ adoption of conservation practices? renewable agriculture and food systems 10.1017/s1742170525100227 social norms / adoption">
+<td class="ref-no">41</td>
+<td><strong>How do different types of social norms relate to farmers’ adoption of conservation practices?</strong><div class="ref-meta">Renewable Agriculture and Food Systems · 2026</div></td>
+<td>Social norms / adoption</td>
+<td><a href="https://doi.org/10.1017/S1742170525100227" target="_blank" rel="noopener">10.1017/S1742170525100227</a></td>
+</tr>
+<tr id="ref-42" data-theme="conservation adoption / systems" data-search="an analysis of conservation practice adoption studies in agricultural human-natural systems journal of environmental management 10.1016/j.jenvman.2019.02.009 conservation adoption / systems">
+<td class="ref-no">42</td>
+<td><strong>An analysis of conservation practice adoption studies in agricultural human-natural systems</strong><div class="ref-meta">Journal of Environmental Management · 2019</div></td>
+<td>Conservation adoption / systems</td>
+<td><a href="https://doi.org/10.1016/j.jenvman.2019.02.009" target="_blank" rel="noopener">10.1016/j.jenvman.2019.02.009</a></td>
+</tr>
+<tr id="ref-43" data-theme="biodiversity / agri-environment schemes" data-search="agri-environmental schemes for biodiversity and environmental protection: how we are not yet ‘hitting the right keys’ land use policy 10.1016/j.landusepol.2021.105620 biodiversity / agri-environment schemes">
+<td class="ref-no">43</td>
+<td><strong>Agri-environmental schemes for biodiversity and environmental protection: How we are not yet ‘hitting the right keys’</strong><div class="ref-meta">Land Use Policy · 2021</div></td>
+<td>Biodiversity / agri-environment schemes</td>
+<td><a href="https://doi.org/10.1016/j.landusepol.2021.105620" target="_blank" rel="noopener">10.1016/j.landusepol.2021.105620</a></td>
+</tr>
+<tr id="ref-44" data-theme="biodiversity / values / perceptions" data-search="how values and perceptions shape farmers&#x27; biodiversity management: insights from ten european countries biological conservation 10.1016/j.biocon.2024.110496 biodiversity / values / perceptions">
+<td class="ref-no">44</td>
+<td><strong>How values and perceptions shape farmers&#x27; biodiversity management: Insights from ten European countries</strong><div class="ref-meta">Biological Conservation · 2024</div></td>
+<td>Biodiversity / values / perceptions</td>
+<td><a href="https://doi.org/10.1016/j.biocon.2024.110496" target="_blank" rel="noopener">10.1016/j.biocon.2024.110496</a></td>
+</tr>
+<tr id="ref-45" data-theme="eu behaviour / adoption" data-search="behavioural drivers of sustainable agricultural practices adoption in the eu: a systematic review spanish journal of agricultural research 10.5424/sjar/2025234-21506 eu behaviour / adoption">
+<td class="ref-no">45</td>
+<td><strong>Behavioural drivers of sustainable agricultural practices adoption in the EU: a systematic review</strong><div class="ref-meta">Spanish Journal of Agricultural Research · 2025</div></td>
+<td>EU behaviour / adoption</td>
+<td><a href="https://doi.org/10.5424/sjar/2025234-21506" target="_blank" rel="noopener">10.5424/sjar/2025234-21506</a></td>
+</tr>
+<tr id="ref-46" data-theme="trust / attitudes / policy" data-search="the role of rice farmers’ attitude and trust in government in decision-making for participating in a climate-related agri-environmental scheme journal of environmental planning and management 10.1080/09640568.2023.2180348 trust / attitudes / policy">
+<td class="ref-no">46</td>
+<td><strong>The role of rice farmers’ attitude and trust in government in decision-making for participating in a climate-related agri-environmental scheme</strong><div class="ref-meta">Journal of Environmental Planning and Management · 2024</div></td>
+<td>Trust / attitudes / policy</td>
+<td><a href="https://doi.org/10.1080/09640568.2023.2180348" target="_blank" rel="noopener">10.1080/09640568.2023.2180348</a></td>
+</tr>
+<tr id="ref-47" data-theme="motivation / cooperation" data-search="farmer motivation to participate in cooperative agri-environmental and climate measures earth stewardship 10.1002/eas2.70011 motivation / cooperation">
+<td class="ref-no">47</td>
+<td><strong>Farmer motivation to participate in cooperative agri-environmental and climate measures</strong><div class="ref-meta">Earth Stewardship · 2025</div></td>
+<td>Motivation / cooperation</td>
+<td><a href="https://doi.org/10.1002/eas2.70011" target="_blank" rel="noopener">10.1002/eas2.70011</a></td>
+</tr>
+<tr id="ref-48" data-theme="training / information literacy" data-search="toward sustainable farming: the roles of information literacy and training in shaping green production practices among rice farmers in china—a mixed-methods study frontiers in sustainable food systems 10.3389/fsufs.2026.1769045 training / information literacy">
+<td class="ref-no">48</td>
+<td><strong>Toward sustainable farming: the roles of information literacy and training in shaping green production practices among rice farmers in China—a mixed-methods study</strong><div class="ref-meta">Frontiers in Sustainable Food Systems · 2026</div></td>
+<td>Training / information literacy</td>
+<td><a href="https://doi.org/10.3389/fsufs.2026.1769045" target="_blank" rel="noopener">10.3389/fsufs.2026.1769045</a></td>
+</tr>
+<tr id="ref-49" data-theme="intention / biodiversity / soil" data-search="understanding farmers’ intention to perform result-based agri-environmental schemes for the improved provision of biodiversity and soil quality journal of environmental planning and management 10.1080/09640568.2024.2364774 intention / biodiversity / soil">
+<td class="ref-no">49</td>
+<td><strong>Understanding farmers’ intention to perform result-based agri-environmental schemes for the improved provision of biodiversity and soil quality</strong><div class="ref-meta">Journal of Environmental Planning and Management · 2024</div></td>
+<td>Intention / biodiversity / soil</td>
+<td><a href="https://doi.org/10.1080/09640568.2024.2364774" target="_blank" rel="noopener">10.1080/09640568.2024.2364774</a></td>
+</tr>
+<tr id="ref-50" data-theme="decision-making / farm performance" data-search="drivers linking farmers’ decision-making with farm performance: a systematic review and future research agenda heliyon 10.1016/j.heliyon.2023.e20820 decision-making / farm performance">
+<td class="ref-no">50</td>
+<td><strong>Drivers linking farmers’ decision-making with farm performance: A systematic review and future research agenda</strong><div class="ref-meta">Heliyon · 2023</div></td>
+<td>Decision-making / farm performance</td>
+<td><a href="https://doi.org/10.1016/j.heliyon.2023.e20820" target="_blank" rel="noopener">10.1016/j.heliyon.2023.e20820</a></td>
+</tr>
+<tr id="ref-51" data-theme="theory of planned behaviour / aes" data-search="participation in individual and collective agri-environmental schemes: a synthesis using the theory of planned behaviour journal of rural studies 10.1016/j.jrurstud.2024.103255 theory of planned behaviour / aes">
+<td class="ref-no">51</td>
+<td><strong>Participation in individual and collective agri-environmental schemes: A synthesis using the Theory of Planned Behaviour</strong><div class="ref-meta">Journal of Rural Studies · 2024</div></td>
+<td>Theory of Planned Behaviour / AES</td>
+<td><a href="https://doi.org/10.1016/j.jrurstud.2024.103255" target="_blank" rel="noopener">10.1016/j.jrurstud.2024.103255</a></td>
+</tr>
+<tr id="ref-52" data-theme="digital literacy / policy" data-search="farmers&#x27; attitudes toward the use of digital technologies in the context of agri-environmental policies agricultural systems 10.1016/j.agsy.2024.104129 digital literacy / policy">
+<td class="ref-no">52</td>
+<td><strong>Farmers&#x27; attitudes toward the use of digital technologies in the context of agri-environmental policies</strong><div class="ref-meta">Agricultural Systems · 2024</div></td>
+<td>Digital literacy / policy</td>
+<td><a href="https://doi.org/10.1016/j.agsy.2024.104129" target="_blank" rel="noopener">10.1016/j.agsy.2024.104129</a></td>
+</tr>
+<tr id="ref-53" data-theme="farmer identity / advisory services" data-search="the ‘good farmer’ and nature conservation through the eyes of agricultural advisors: insights from slovenia agriculture and human values 10.1007/s10460-025-10815-z farmer identity / advisory services">
+<td class="ref-no">53</td>
+<td><strong>The ‘Good Farmer’ and nature conservation through the eyes of agricultural advisors: insights from Slovenia</strong><div class="ref-meta">Agriculture and Human Values · 2026</div></td>
+<td>Farmer identity / advisory services</td>
+<td><a href="https://doi.org/10.1007/s10460-025-10815-z" target="_blank" rel="noopener">10.1007/s10460-025-10815-z</a></td>
+</tr>
+<tr id="ref-54" data-theme="environmental attitudes / awareness" data-search="how can iranian farmers’ attitudes toward environmental conservation be influenced? global ecology and conservation 10.1016/j.gecco.2021.e01870 environmental attitudes / awareness">
+<td class="ref-no">54</td>
+<td><strong>How can Iranian farmers’ attitudes toward environmental conservation be influenced?</strong><div class="ref-meta">Global Ecology and Conservation · 2021</div></td>
+<td>Environmental attitudes / awareness</td>
+<td><a href="https://doi.org/10.1016/j.gecco.2021.e01870" target="_blank" rel="noopener">10.1016/j.gecco.2021.e01870</a></td>
+</tr>
+<tr id="ref-55" data-theme="socio-psychological adoption factors" data-search="meta-analyses reveal the importance of socio-psychological factors for farmers’ adoption of sustainable agricultural practices one earth 10.1016/j.oneear.2023.10.028 socio-psychological adoption factors">
+<td class="ref-no">55</td>
+<td><strong>Meta-analyses reveal the importance of socio-psychological factors for farmers’ adoption of sustainable agricultural practices</strong><div class="ref-meta">One Earth · 2023</div></td>
+<td>Socio-psychological adoption factors</td>
+<td><a href="https://doi.org/10.1016/j.oneear.2023.10.028" target="_blank" rel="noopener">10.1016/j.oneear.2023.10.028</a></td>
+</tr>
+<tr id="ref-56" data-theme="trust / social capital / contracts" data-search="institutional design of agri-environmental contracts in the european union: the role of trust and social capital njas: wageningen journal of life sciences 10.1016/s1573-5214(08)80029-2 trust / social capital / contracts">
+<td class="ref-no">56</td>
+<td><strong>Institutional design of agri-environmental contracts in the European Union: the role of trust and social capital</strong><div class="ref-meta">NJAS: Wageningen Journal of Life Sciences · 2008</div></td>
+<td>Trust / social capital / contracts</td>
+<td><a href="https://doi.org/10.1016/S1573-5214(08)80029-2" target="_blank" rel="noopener">10.1016/S1573-5214(08)80029-2</a></td>
+</tr>
+<tr id="ref-57" data-theme="best management practices / adoption" data-search="factors influencing farmers’ adoption of best management practices: a review and synthesis sustainability 10.3390/su10020432 best management practices / adoption">
+<td class="ref-no">57</td>
+<td><strong>Factors Influencing Farmers’ Adoption of Best Management Practices: A Review and Synthesis</strong><div class="ref-meta">Sustainability · 2018</div></td>
+<td>Best management practices / adoption</td>
+<td><a href="https://doi.org/10.3390/su10020432" target="_blank" rel="noopener">10.3390/su10020432</a></td>
+</tr>
+<tr id="ref-58" data-theme="best management practices / adoption" data-search="determinants of agricultural best management practice adoption: evidence from the literature journal of soil and water conservation 10.2489/jswc.63.5.300 best management practices / adoption">
+<td class="ref-no">58</td>
+<td><strong>Determinants of agricultural best management practice adoption: Evidence from the literature</strong><div class="ref-meta">Journal of Soil and Water Conservation · 2008</div></td>
+<td>Best management practices / adoption</td>
+<td><a href="https://doi.org/10.2489/jswc.63.5.300" target="_blank" rel="noopener">10.2489/jswc.63.5.300</a></td>
+</tr>
+<tr id="ref-59" data-theme="conservation adoption / extension" data-search="understanding and promoting adoption of conservation practices by rural landholders australian journal of experimental agriculture 10.1071/ea05037 conservation adoption / extension">
+<td class="ref-no">59</td>
+<td><strong>Understanding and promoting adoption of conservation practices by rural landholders</strong><div class="ref-meta">Australian Journal of Experimental Agriculture · 2006</div></td>
+<td>Conservation adoption / extension</td>
+<td><a href="https://doi.org/10.1071/EA05037" target="_blank" rel="noopener">10.1071/EA05037</a></td>
+</tr>
+<tr id="ref-60" data-theme="farmer identity / cultural norms" data-search="seeing through the ‘good farmer&#x27;s’ eyes: towards developing an understanding of the social symbolic value of ‘productivist’ behaviour sociologia ruralis 10.1111/j.1467-9523.2004.00270.x farmer identity / cultural norms">
+<td class="ref-no">60</td>
+<td><strong>Seeing Through the ‘Good Farmer&#x27;s’ Eyes: Towards Developing an Understanding of the Social Symbolic Value of ‘Productivist’ Behaviour</strong><div class="ref-meta">Sociologia Ruralis · 2004</div></td>
+<td>Farmer identity / cultural norms</td>
+<td><a href="https://doi.org/10.1111/j.1467-9523.2004.00270.x" target="_blank" rel="noopener">10.1111/j.1467-9523.2004.00270.x</a></td>
+</tr>
+<tr id="ref-61" data-theme="social psychology / farmer identity" data-search="injecting social psychology theory into conceptualisations of agricultural agency: towards a post-productivist farmer self-identity? journal of rural studies 10.1016/j.jrurstud.2005.07.004 social psychology / farmer identity">
+<td class="ref-no">61</td>
+<td><strong>Injecting social psychology theory into conceptualisations of agricultural agency: Towards a post-productivist farmer self-identity?</strong><div class="ref-meta">Journal of Rural Studies · 2006</div></td>
+<td>Social psychology / farmer identity</td>
+<td><a href="https://doi.org/10.1016/j.jrurstud.2005.07.004" target="_blank" rel="noopener">10.1016/j.jrurstud.2005.07.004</a></td>
+</tr>
+<tr id="ref-62" data-theme="farmer identity / environmental response" data-search="farmer identities and responses to the social–biophysical environment journal of rural studies 10.1016/j.jrurstud.2015.03.011 farmer identity / environmental response">
+<td class="ref-no">62</td>
+<td><strong>Farmer identities and responses to the social–biophysical environment</strong><div class="ref-meta">Journal of Rural Studies · 2015</div></td>
+<td>Farmer identity / environmental response</td>
+<td><a href="https://doi.org/10.1016/j.jrurstud.2015.03.011" target="_blank" rel="noopener">10.1016/j.jrurstud.2015.03.011</a></td>
+</tr>
+<tr id="ref-63" data-theme="adoption determinants / meta-analysis" data-search="why farmers adopt best management practice in the united states: a meta-analysis of the adoption literature journal of environmental management 10.1016/j.jenvman.2011.10.006 adoption determinants / meta-analysis">
+<td class="ref-no">63</td>
+<td><strong>Why farmers adopt best management practice in the United States: A meta-analysis of the adoption literature</strong><div class="ref-meta">Journal of Environmental Management · 2012</div></td>
+<td>Adoption determinants / meta-analysis</td>
+<td><a href="https://doi.org/10.1016/j.jenvman.2011.10.006" target="_blank" rel="noopener">10.1016/j.jenvman.2011.10.006</a></td>
+</tr>
+<tr id="ref-64" data-theme="training / experiential learning" data-search="community-embedded experiential learning and adoption of conservation farming practices in eastern and southern africa environmental development 10.1016/j.envdev.2021.100672 training / experiential learning">
+<td class="ref-no">64</td>
+<td><strong>Community-embedded experiential learning and adoption of conservation farming practices in Eastern and Southern Africa</strong><div class="ref-meta">Environmental Development · 2021</div></td>
+<td>Training / experiential learning</td>
+<td><a href="https://doi.org/10.1016/j.envdev.2021.100672" target="_blank" rel="noopener">10.1016/j.envdev.2021.100672</a></td>
+</tr>
+<tr id="ref-65" data-theme="self-identity / intrinsic motivation" data-search="factors underlying farmers’ intentions to perform unsubsidised agri-environmental measures land use policy 10.1016/j.landusepol.2016.09.003 self-identity / intrinsic motivation">
+<td class="ref-no">65</td>
+<td><strong>Factors underlying farmers’ intentions to perform unsubsidised agri-environmental measures</strong><div class="ref-meta">Land Use Policy · 2016</div></td>
+<td>Self-identity / intrinsic motivation</td>
+<td><a href="https://doi.org/10.1016/j.landusepol.2016.09.003" target="_blank" rel="noopener">10.1016/j.landusepol.2016.09.003</a></td>
+</tr>
+<tr id="ref-66" data-theme="farmer-to-farmer learning" data-search="social learning in agriculture: a scalable farmer-to-farmer extension approach for dairy farmers journal of development economics 10.1016/j.jdeveco.2026.103853 farmer-to-farmer learning">
+<td class="ref-no">66</td>
+<td><strong>Social learning in agriculture: A scalable farmer-to-farmer extension approach for dairy farmers</strong><div class="ref-meta">Journal of Development Economics · 2026</div></td>
+<td>Farmer-to-farmer learning</td>
+<td><a href="https://doi.org/10.1016/j.jdeveco.2026.103853" target="_blank" rel="noopener">10.1016/j.jdeveco.2026.103853</a></td>
+</tr>
+<tr id="ref-67" data-theme="risk / information / preferences" data-search="unlocking organic farming adoption: the role of information completeness and farmers’ individual preferences journal of rural studies 10.1016/j.jrurstud.2026.104013 risk / information / preferences">
+<td class="ref-no">67</td>
+<td><strong>Unlocking organic farming adoption: The role of information completeness and farmers’ individual preferences</strong><div class="ref-meta">Journal of Rural Studies · 2026</div></td>
+<td>Risk / information / preferences</td>
+<td><a href="https://doi.org/10.1016/j.jrurstud.2026.104013" target="_blank" rel="noopener">10.1016/j.jrurstud.2026.104013</a></td>
+</tr>
+<tr id="ref-68" data-theme="sustainability transitions / theory" data-search="sustainability transitions: an emerging field of research and its prospects research policy 10.1016/j.respol.2012.02.013 sustainability transitions / theory">
+<td class="ref-no">68</td>
+<td><strong>Sustainability transitions: An emerging field of research and its prospects</strong><div class="ref-meta">Research Policy · 2012</div></td>
+<td>Sustainability transitions / theory</td>
+<td><a href="https://doi.org/10.1016/j.respol.2012.02.013" target="_blank" rel="noopener">10.1016/j.respol.2012.02.013</a></td>
+</tr>
+<tr id="ref-69" data-theme="multi-level perspective / transitions" data-search="technological transitions as evolutionary reconfiguration processes: a multi-level perspective and a case-study research policy 10.1016/s0048-7333(02)00062-8 multi-level perspective / transitions">
+<td class="ref-no">69</td>
+<td><strong>Technological transitions as evolutionary reconfiguration processes: a multi-level perspective and a case-study</strong><div class="ref-meta">Research Policy · 2002</div></td>
+<td>Multi-level perspective / transitions</td>
+<td><a href="https://doi.org/10.1016/S0048-7333(02)00062-8" target="_blank" rel="noopener">10.1016/S0048-7333(02)00062-8</a></td>
+</tr>
+<tr id="ref-70" data-theme="transition pathways" data-search="typology of sociotechnical transition pathways research policy 10.1016/j.respol.2007.01.003 transition pathways">
+<td class="ref-no">70</td>
+<td><strong>Typology of sociotechnical transition pathways</strong><div class="ref-meta">Research Policy · 2007</div></td>
+<td>Transition pathways</td>
+<td><a href="https://doi.org/10.1016/j.respol.2007.01.003" target="_blank" rel="noopener">10.1016/j.respol.2007.01.003</a></td>
+</tr>
+<tr id="ref-71" data-theme="transition governance" data-search="the governance of sustainable socio-technical transitions research policy 10.1016/j.respol.2005.07.005 transition governance">
+<td class="ref-no">71</td>
+<td><strong>The governance of sustainable socio-technical transitions</strong><div class="ref-meta">Research Policy · 2005</div></td>
+<td>Transition governance</td>
+<td><a href="https://doi.org/10.1016/j.respol.2005.07.005" target="_blank" rel="noopener">10.1016/j.respol.2005.07.005</a></td>
+</tr>
+<tr id="ref-72" data-theme="strategic niche management" data-search="strategic niche management and sustainable innovation journeys: theory, findings, research agenda, and policy technology analysis &amp; strategic management 10.1080/09537320802292651 strategic niche management">
+<td class="ref-no">72</td>
+<td><strong>Strategic niche management and sustainable innovation journeys: theory, findings, research agenda, and policy</strong><div class="ref-meta">Technology Analysis &amp; Strategic Management · 2008</div></td>
+<td>Strategic niche management</td>
+<td><a href="https://doi.org/10.1080/09537320802292651" target="_blank" rel="noopener">10.1080/09537320802292651</a></td>
+</tr>
+<tr id="ref-73" data-theme="transition management / governance" data-search="transition management for sustainable development: a prescriptive, complexity-based governance framework governance 10.1111/j.1468-0491.2009.01471.x transition management / governance">
+<td class="ref-no">73</td>
+<td><strong>Transition Management for Sustainable Development: A Prescriptive, Complexity-Based Governance Framework</strong><div class="ref-meta">Governance · 2010</div></td>
+<td>Transition management / governance</td>
+<td><a href="https://doi.org/10.1111/j.1468-0491.2009.01471.x" target="_blank" rel="noopener">10.1111/j.1468-0491.2009.01471.x</a></td>
+</tr>
+<tr id="ref-74" data-theme="agricultural innovation systems / scaling" data-search="systemic perspectives on scaling agricultural innovations: a review agronomy for sustainable development 10.1007/s13593-016-0380-z agricultural innovation systems / scaling">
+<td class="ref-no">74</td>
+<td><strong>Systemic perspectives on scaling agricultural innovations: A review</strong><div class="ref-meta">Agronomy for Sustainable Development · 2016</div></td>
+<td>Agricultural innovation systems / scaling</td>
+<td><a href="https://doi.org/10.1007/s13593-016-0380-z" target="_blank" rel="noopener">10.1007/s13593-016-0380-z</a></td>
+</tr>
+<tr id="ref-75" data-theme="agriculture 4.0 / transitions" data-search="dealing with the game-changing technologies of agriculture 4.0: how do we manage diversity and responsibility in food system transition pathways? global food security 10.1016/j.gfs.2019.100347 agriculture 4.0 / transitions">
+<td class="ref-no">75</td>
+<td><strong>Dealing with the game-changing technologies of Agriculture 4.0: How do we manage diversity and responsibility in food system transition pathways?</strong><div class="ref-meta">Global Food Security · 2020</div></td>
+<td>Agriculture 4.0 / transitions</td>
+<td><a href="https://doi.org/10.1016/j.gfs.2019.100347" target="_blank" rel="noopener">10.1016/j.gfs.2019.100347</a></td>
+</tr>
+<tr id="ref-76" data-theme="agri-food transitions / research gaps" data-search="research on agro-food sustainability transitions: a systematic review of research themes and an analysis of research gaps journal of cleaner production 10.1016/j.jclepro.2019.02.232 agri-food transitions / research gaps">
+<td class="ref-no">76</td>
+<td><strong>Research on agro-food sustainability transitions: A systematic review of research themes and an analysis of research gaps</strong><div class="ref-meta">Journal of Cleaner Production · 2019</div></td>
+<td>Agri-food transitions / research gaps</td>
+<td><a href="https://doi.org/10.1016/j.jclepro.2019.02.232" target="_blank" rel="noopener">10.1016/j.jclepro.2019.02.232</a></td>
+</tr>
+<tr id="ref-77" data-theme="agri-food transitions / food security" data-search="research on agro-food sustainability transitions: where are food security and nutrition? food security 10.1007/s12571-019-00922-1 agri-food transitions / food security">
+<td class="ref-no">77</td>
+<td><strong>Research on agro-food sustainability transitions: where are food security and nutrition?</strong><div class="ref-meta">Food Security · 2019</div></td>
+<td>Agri-food transitions / food security</td>
+<td><a href="https://doi.org/10.1007/s12571-019-00922-1" target="_blank" rel="noopener">10.1007/s12571-019-00922-1</a></td>
+</tr>
+<tr id="ref-78" data-theme="transition frameworks" data-search="transition heuristic frameworks in research on agro-food sustainability transitions environment, development and sustainability 10.1007/s10668-018-0290-0 transition frameworks">
+<td class="ref-no">78</td>
+<td><strong>Transition heuristic frameworks in research on agro-food sustainability transitions</strong><div class="ref-meta">Environment, Development and Sustainability · 2020</div></td>
+<td>Transition frameworks</td>
+<td><a href="https://doi.org/10.1007/s10668-018-0290-0" target="_blank" rel="noopener">10.1007/s10668-018-0290-0</a></td>
+</tr>
+<tr id="ref-79" data-theme="mlp / agri-food systems" data-search="agri-food systems in sustainability transition: a systematic literature review on recent developments on the use of the multi-level perspective frontiers in sustainable food systems 10.3389/fsufs.2023.1207476 mlp / agri-food systems">
+<td class="ref-no">79</td>
+<td><strong>Agri-food systems in sustainability transition: a systematic literature review on recent developments on the use of the multi-level perspective</strong><div class="ref-meta">Frontiers in Sustainable Food Systems · 2023</div></td>
+<td>MLP / agri-food systems</td>
+<td><a href="https://doi.org/10.3389/fsufs.2023.1207476" target="_blank" rel="noopener">10.3389/fsufs.2023.1207476</a></td>
+</tr>
+<tr id="ref-80" data-theme="agroecology / scaling" data-search="agroecology for a sustainable agriculture and food system: from local solutions to large-scale adoption annual review of resource economics 10.1146/annurev-resource-102422-090105 agroecology / scaling">
+<td class="ref-no">80</td>
+<td><strong>Agroecology for a Sustainable Agriculture and Food System: From Local Solutions to Large-Scale Adoption</strong><div class="ref-meta">Annual Review of Resource Economics · 2023</div></td>
+<td>Agroecology / scaling</td>
+<td><a href="https://doi.org/10.1146/annurev-resource-102422-090105" target="_blank" rel="noopener">10.1146/annurev-resource-102422-090105</a></td>
+</tr>
+<tr id="ref-81" data-theme="food systems / transitions / value chains" data-search="characterizing diversity of food systems in view of sustainability transitions: a review agronomy for sustainable development 10.1007/s13593-018-0550-2 food systems / transitions / value chains">
+<td class="ref-no">81</td>
+<td><strong>Characterizing diversity of food systems in view of sustainability transitions: A review</strong><div class="ref-meta">Agronomy for Sustainable Development · 2019</div></td>
+<td>Food systems / transitions / value chains</td>
+<td><a href="https://doi.org/10.1007/s13593-018-0550-2" target="_blank" rel="noopener">10.1007/s13593-018-0550-2</a></td>
+</tr>
+<tr id="ref-82" data-theme="ecosystem services / multifunctionality" data-search="comparative review of multifunctionality and ecosystem services in sustainable agriculture journal of environmental management 10.1016/j.jenvman.2014.10.020 ecosystem services / multifunctionality">
+<td class="ref-no">82</td>
+<td><strong>Comparative review of multifunctionality and ecosystem services in sustainable agriculture</strong><div class="ref-meta">Journal of Environmental Management · 2015</div></td>
+<td>Ecosystem services / multifunctionality</td>
+<td><a href="https://doi.org/10.1016/j.jenvman.2014.10.020" target="_blank" rel="noopener">10.1016/j.jenvman.2014.10.020</a></td>
+</tr>
+<tr id="ref-83" data-theme="food systems / sustainability transitions" data-search="food and nutrition security and sustainability transitions in food systems food and energy security 10.1002/fes3.154 food systems / sustainability transitions">
+<td class="ref-no">83</td>
+<td><strong>Food and nutrition security and sustainability transitions in food systems</strong><div class="ref-meta">Food and Energy Security · 2019</div></td>
+<td>Food systems / sustainability transitions</td>
+<td><a href="https://doi.org/10.1002/fes3.154" target="_blank" rel="noopener">10.1002/fes3.154</a></td>
+</tr>
+<tr id="ref-84" data-theme="biodiversity indicators / aes" data-search="biodiversity indicators for result-based agri-environmental schemes – current state and future prospects agricultural systems 10.1016/j.agsy.2022.103538 biodiversity indicators / aes">
+<td class="ref-no">84</td>
+<td><strong>Biodiversity indicators for result-based agri-environmental schemes – Current state and future prospects</strong><div class="ref-meta">Agricultural Systems · 2023</div></td>
+<td>Biodiversity indicators / AES</td>
+<td><a href="https://doi.org/10.1016/j.agsy.2022.103538" target="_blank" rel="noopener">10.1016/j.agsy.2022.103538</a></td>
+</tr>
+<tr id="ref-85" data-theme="agroecology / adoption drivers" data-search="unlocking agroecology: a meta-analytical perspective on barriers and drivers global ecology and conservation 10.1016/j.gecco.2025.e04028 agroecology / adoption drivers">
+<td class="ref-no">85</td>
+<td><strong>Unlocking agroecology: A meta-analytical perspective on barriers and drivers</strong><div class="ref-meta">Global Ecology and Conservation · 2026</div></td>
+<td>Agroecology / adoption drivers</td>
+<td><a href="https://doi.org/10.1016/j.gecco.2025.e04028" target="_blank" rel="noopener">10.1016/j.gecco.2025.e04028</a></td>
+</tr>
+<tr id="ref-86" data-theme="food-system transformation / policy" data-search="national pathways for food systems transformation are limited in scope and degree of ambition nature food 10.1038/s43016-025-01206-y food-system transformation / policy">
+<td class="ref-no">86</td>
+<td><strong>National pathways for food systems transformation are limited in scope and degree of ambition</strong><div class="ref-meta">Nature Food · 2025</div></td>
+<td>Food-system transformation / policy</td>
+<td><a href="https://doi.org/10.1038/s43016-025-01206-y" target="_blank" rel="noopener">10.1038/s43016-025-01206-y</a></td>
+</tr>
+<tr id="ref-87" data-theme="agricultural transitions / sustainability" data-search="agricultural transition processes and sustainability: a review with a focus on low-income settings global environmental change advances 10.1016/j.gecadv.2025.100025 agricultural transitions / sustainability">
+<td class="ref-no">87</td>
+<td><strong>Agricultural transition processes and sustainability: A review with a focus on low-income settings</strong><div class="ref-meta">Global Environmental Change Advances · 2025</div></td>
+<td>Agricultural transitions / sustainability</td>
+<td><a href="https://doi.org/10.1016/j.gecadv.2025.100025" target="_blank" rel="noopener">10.1016/j.gecadv.2025.100025</a></td>
+</tr>
+<tr id="ref-88" data-theme="group model building / systems thinking" data-search="co-creating resilient community food systems: a systems approach using group model building health &amp; place 10.1016/j.healthplace.2026.103626 group model building / systems thinking">
+<td class="ref-no">88</td>
+<td><strong>Co-creating resilient community food systems: A systems approach using group model building</strong><div class="ref-meta">Health &amp; Place · 2026</div></td>
+<td>Group model building / systems thinking</td>
+<td><a href="https://doi.org/10.1016/j.healthplace.2026.103626" target="_blank" rel="noopener">10.1016/j.healthplace.2026.103626</a></td>
+</tr>
+<tr id="ref-89" data-theme="participatory modelling / food systems" data-search="navigating community engagement in participatory modeling of food systems environmental science &amp; policy 10.1016/j.envsci.2023.103645 participatory modelling / food systems">
+<td class="ref-no">89</td>
+<td><strong>Navigating community engagement in participatory modeling of food systems</strong><div class="ref-meta">Environmental Science &amp; Policy · 2024</div></td>
+<td>Participatory modelling / food systems</td>
+<td><a href="https://doi.org/10.1016/j.envsci.2023.103645" target="_blank" rel="noopener">10.1016/j.envsci.2023.103645</a></td>
+</tr>
+<tr id="ref-90" data-theme="agent-based modelling / transitions" data-search="sustainability transitions in agri-food systems through the lens of agent-based modeling: a systematic review sustainability science 10.1007/s11625-024-01551-0 agent-based modelling / transitions">
+<td class="ref-no">90</td>
+<td><strong>Sustainability transitions in agri-food systems through the lens of agent-based modeling: a systematic review</strong><div class="ref-meta">Sustainability Science · 2024</div></td>
+<td>Agent-based modelling / transitions</td>
+<td><a href="https://doi.org/10.1007/s11625-024-01551-0" target="_blank" rel="noopener">10.1007/s11625-024-01551-0</a></td>
+</tr>
+<tr id="ref-91" data-theme="system dynamics / food-system transformation" data-search="assessing environmental impacts of response strategies for sustainable food system transformation sustainable development 10.1002/sd.2795 system dynamics / food-system transformation">
+<td class="ref-no">91</td>
+<td><strong>Assessing environmental impacts of response strategies for sustainable food system transformation</strong><div class="ref-meta">Sustainable Development · 2024</div></td>
+<td>System dynamics / food-system transformation</td>
+<td><a href="https://doi.org/10.1002/sd.2795" target="_blank" rel="noopener">10.1002/sd.2795</a></td>
+</tr>
+<tr id="ref-92" data-theme="system dynamics / few nexus" data-search="food-energy-water (few) nexus: sustainable food production governance through system dynamics modeling journal of cleaner production 10.1016/j.jclepro.2022.135825 system dynamics / few nexus">
+<td class="ref-no">92</td>
+<td><strong>Food-energy-water (FEW) nexus: Sustainable food production governance through system dynamics modeling</strong><div class="ref-meta">Journal of Cleaner Production · 2023</div></td>
+<td>System dynamics / FEW nexus</td>
+<td><a href="https://doi.org/10.1016/j.jclepro.2022.135825" target="_blank" rel="noopener">10.1016/j.jclepro.2022.135825</a></td>
+</tr>
+<tr id="ref-93" data-theme="system dynamics / causal loops" data-search="investigating the sustainability of a food system by system dynamics approach international journal of intelligent engineering informatics 10.1504/ijiei.2020.111247 system dynamics / causal loops">
+<td class="ref-no">93</td>
+<td><strong>Investigating the sustainability of a food system by system dynamics approach</strong><div class="ref-meta">International Journal of Intelligent Engineering Informatics · 2020</div></td>
+<td>System dynamics / causal loops</td>
+<td><a href="https://doi.org/10.1504/IJIEI.2020.111247" target="_blank" rel="noopener">10.1504/IJIEI.2020.111247</a></td>
+</tr>
+<tr id="ref-94" data-theme="participatory modelling / agri-environment" data-search="the use of participatory modeling in agri-environmental research – a review environmental science &amp; policy 10.1016/j.envsci.2026.104458 participatory modelling / agri-environment">
+<td class="ref-no">94</td>
+<td><strong>The use of participatory modeling in agri-environmental research – A review</strong><div class="ref-meta">Environmental Science &amp; Policy · 2026</div></td>
+<td>Participatory modelling / agri-environment</td>
+<td><a href="https://doi.org/10.1016/j.envsci.2026.104458" target="_blank" rel="noopener">10.1016/j.envsci.2026.104458</a></td>
+</tr>
+<tr id="ref-95" data-theme="system dynamics / value chains" data-search="understanding the relationships between sustainability performance functions in fresh food supply chain design using system dynamics international food and agribusiness management review 10.1163/18696945-bja00017 system dynamics / value chains">
+<td class="ref-no">95</td>
+<td><strong>Understanding the Relationships between Sustainability Performance Functions in Fresh Food Supply Chain Design Using System Dynamics</strong><div class="ref-meta">International Food and Agribusiness Management Review · 2025</div></td>
+<td>System dynamics / value chains</td>
+<td><a href="https://doi.org/10.1163/18696945-bja00017" target="_blank" rel="noopener">10.1163/18696945-bja00017</a></td>
+</tr>
+<tr id="ref-96" data-theme="soil health / agroecological transition" data-search="soil-health frameworks in agri-food systems: a review agronomy for sustainable development 10.1007/s13593-026-01111-z soil health / agroecological transition">
+<td class="ref-no">96</td>
+<td><strong>Soil-health frameworks in agri-food systems: A review</strong><div class="ref-meta">Agronomy for Sustainable Development · 2026</div></td>
+<td>Soil health / agroecological transition</td>
+<td><a href="https://doi.org/10.1007/s13593-026-01111-z" target="_blank" rel="noopener">10.1007/s13593-026-01111-z</a></td>
+</tr>
+<tr id="ref-97" data-theme="soil health / sustainable farming" data-search="sustainable farming practices and soil health: a pathway to achieving sdgs and future prospects discover sustainability 10.1007/s43621-024-00447-4 soil health / sustainable farming">
+<td class="ref-no">97</td>
+<td><strong>Sustainable farming practices and soil health: a pathway to achieving SDGs and future prospects</strong><div class="ref-meta">Discover Sustainability · 2024</div></td>
+<td>Soil health / sustainable farming</td>
+<td><a href="https://doi.org/10.1007/s43621-024-00447-4" target="_blank" rel="noopener">10.1007/s43621-024-00447-4</a></td>
+</tr>
+<tr id="ref-98" data-theme="regenerative agriculture / soil health" data-search="potential regenerative agricultural practices for different ecosystems to rebuild soil health and ensure food security: a comprehensive review annals of applied biology 10.1111/aab.70138 regenerative agriculture / soil health">
+<td class="ref-no">98</td>
+<td><strong>Potential regenerative agricultural practices for different ecosystems to rebuild soil health and ensure food security: A comprehensive review</strong><div class="ref-meta">Annals of Applied Biology · 2026</div></td>
+<td>Regenerative agriculture / soil health</td>
+<td><a href="https://doi.org/10.1111/aab.70138" target="_blank" rel="noopener">10.1111/aab.70138</a></td>
+</tr>
+<tr id="ref-99" data-theme="soil carbon / european cropland" data-search="carbon farming practices for european cropland: a review on the effect on soil organic carbon soil and tillage research 10.1016/j.still.2024.106353 soil carbon / european cropland">
+<td class="ref-no">99</td>
+<td><strong>Carbon farming practices for European cropland: A review on the effect on soil organic carbon</strong><div class="ref-meta">Soil and Tillage Research · 2025</div></td>
+<td>Soil carbon / European cropland</td>
+<td><a href="https://doi.org/10.1016/j.still.2024.106353" target="_blank" rel="noopener">10.1016/j.still.2024.106353</a></td>
+</tr>
+<tr id="ref-100" data-theme="soil carbon / organic farming" data-search="soil organic carbon is affected by organic amendments, conservation tillage, and cover cropping in organic farming systems: a meta-analysis agriculture, ecosystems &amp; environment 10.1016/j.agee.2021.107356 soil carbon / organic farming">
+<td class="ref-no">100</td>
+<td><strong>Soil organic carbon is affected by organic amendments, conservation tillage, and cover cropping in organic farming systems: A meta-analysis</strong><div class="ref-meta">Agriculture, Ecosystems &amp; Environment · 2021</div></td>
+<td>Soil carbon / organic farming</td>
+<td><a href="https://doi.org/10.1016/j.agee.2021.107356" target="_blank" rel="noopener">10.1016/j.agee.2021.107356</a></td>
+</tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <strong>Agriculture → Business Administration → Supply Chain → Operations → Analytics.</strong><br>
+  Power BI portfolio project using a synthetic agrifood dataset, interactive dashboards and a 100-paper DOI literature base.
+</div>
+<p style="margin-top:12px"><a href="https://vennelasirusala15-source.github.io/Agrifood-Supplychain-Analytics-/" target="_blank" rel="noopener">View live project</a></p>
+
+</footer>
+
+<script>
+const q = document.getElementById('q');
+const theme = document.getElementById('theme');
+const rows = [...document.querySelectorAll('#refs tr')];
+function filterRefs(){
+  const text = q.value.toLowerCase().trim();
+  const th = theme.value;
+  rows.forEach(r => {
+    const okText = !text || r.dataset.search.includes(text);
+    const okTheme = !th || r.dataset.theme === th;
+    r.style.display = okText && okTheme ? '' : 'none';
+  });
+}
+q.addEventListener('input', filterRefs);
+theme.addEventListener('change', filterRefs);
+</script>
+</body>
+</html>
